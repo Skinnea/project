@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -28,15 +27,13 @@ import androidx.core.content.ContextCompat
 import com.example.projectcapstones.databinding.ActivityCameraBinding
 import com.example.projectcapstones.ui.detail.DetailActivity
 import java.io.File
-import java.io.IOException
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
-    private lateinit var classifier: Classifier
-    private lateinit var mBitmap: Bitmap
+    private lateinit var classifierSkin: ClassifierSkin
+    private lateinit var bitmap: Bitmap
     private var imageCapture: ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-    private val inputSize = 224
     private val model = "model.tflite"
     private val label = "labels.txt"
 
@@ -47,7 +44,7 @@ class CameraActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupButton()
         setupView()
-        classifier = Classifier(assets, model, label, inputSize)
+        classifierSkin = ClassifierSkin(assets, model, label)
     }
 
     private fun setupButton() {
@@ -67,18 +64,17 @@ class CameraActivity : AppCompatActivity() {
             val intent = Intent(this@CameraActivity, DetailActivity::class.java)
             val resultText = binding.previewImage.result.text.toString()
             intent.putExtra("resultText", resultText)
-            intent.putExtra("imageBitmap", mBitmap)
+            intent.putExtra("imageResult", bitmap)
             startActivity(intent)
             finish()
         }
-
         binding.previewImage.againButton.setOnClickListener {
             playAnimationRestart()
         }
     }
 
-    private fun resultScan() {
-        val results = classifier.recognizeImage(mBitmap).firstOrNull()
+    private fun resultScan(imgScan: Bitmap) {
+        val results = classifierSkin.scanImage(imgScan).firstOrNull()
         binding.previewImage.result.text = results?.title
         binding.previewImage.accurate.text = results?.confidence.toString()
     }
@@ -134,8 +130,10 @@ class CameraActivity : AppCompatActivity() {
                         file
                     }
                     if (myFile != null) {
-                        mBitmap = scaleImage(BitmapFactory.decodeFile(myFile.path))
-                        binding.previewImage.previewImageView.setImageBitmap(mBitmap)
+                        val imgScan = compressBitmap(myFile.path, 200)
+                        binding.previewImage.previewImageView.setImageBitmap(imgScan)
+                        resultScan(imgScan)
+                        bitmap = imgScan
                         playAnimation()
                     }
                 }
@@ -143,11 +141,26 @@ class CameraActivity : AppCompatActivity() {
         )
     }
 
+    private fun compressBitmap(filePath: String, maxWidth: Int): Bitmap {
+        val bitmap = BitmapFactory.decodeFile(filePath)
+        val matrix = Matrix()
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, maxWidth, maxWidth, false)
+        return Bitmap.createBitmap(
+            scaledBitmap,
+            0,
+            0,
+            scaledBitmap.width,
+            scaledBitmap.height,
+            matrix,
+            true
+        )
+    }
+
     private fun startGallery() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "Pilih Gambar")
+        val chooser = Intent.createChooser(intent, "Choose a Picture")
         launcherIntentGallery.launch(chooser)
     }
 
@@ -157,36 +170,21 @@ class CameraActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val selectedImg = result.data?.data as Uri
             selectedImg.let { uri ->
-                try {
-                    @Suppress("DEPRECATION")
-                    mBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-                mBitmap = scaleImage(mBitmap)
-                binding.previewImage.previewImageView.setImageBitmap(mBitmap)
                 playAnimation()
+                val imgScan = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
+                binding.previewImage.previewImageView.setImageURI(uri)
+                resultScan(imgScan)
+                bitmap = imgScan
             }
         }
     }
 
-    private fun scaleImage(bitmap: Bitmap?): Bitmap {
-        val orignalWidth = bitmap!!.width
-        val originalHeight = bitmap.height
-        val scaleWidth = inputSize.toFloat() / orignalWidth
-        val scaleHeight = inputSize.toFloat() / originalHeight
-        val matrix = Matrix()
-        matrix.postScale(scaleWidth, scaleHeight)
-        return Bitmap.createBitmap(bitmap, 0, 0, orignalWidth, originalHeight, matrix, true)
-    }
-
     private fun playAnimation() {
-        resultScan()
         binding.progressBar.visibility = View.VISIBLE
-        val previewImg = ObjectAnimator.ofFloat(binding.previewImage.root, View.ALPHA, 1f).setDuration(100)
+        val previewImg = ObjectAnimator.ofFloat(binding.previewImage.root, View.ALPHA, 1f).setDuration(200)
         val animatorSet = AnimatorSet().apply {
             playSequentially(previewImg)
-            startDelay = 100
+            startDelay = 200
         }
         animatorSet.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
@@ -200,7 +198,6 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun playAnimationRestart() {
-        resultScan()
         val previewImg =
             ObjectAnimator.ofFloat(binding.previewImage.root, View.ALPHA, 0f).setDuration(50)
         AnimatorSet().apply {
