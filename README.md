@@ -15,10 +15,10 @@
   - Camera & Gallery (done)
   - Detail Image Identification (done)
   - Integrate Model TFLite (done)
-  - Link User Flow https://drive.google.com/file/d/1FPWhRaUAVm0GY3NZloqabkvHZkex6ZpN/view?usp=share_link
-  - Link Figma Prototipe https://www.figma.com/proto/EnUkq1tXmxfazQ7Uikmft5/Project-Capstone?type=design&node-id=35-117&scaling=scale-down&page-id=0%3A1&starting-point-node-id=35%3A117
-  - Link Figma Hi-Fi https://www.figma.com/file/EnUkq1tXmxfazQ7Uikmft5/Project-Capstone?type=design&node-id=0%3A1&t=jEphhzbAV2ql0IG2-1
-  - Link Apps https://drive.google.com/file/d/1CWNUyfLWHj1oNkrgvjzD5fcBpycawuOS/view?usp=share_link
+  - Link User Flow * https://drive.google.com/file/d/1FPWhRaUAVm0GY3NZloqabkvHZkex6ZpN/view?usp=share_link
+  - Link Figma Prototipe * https://www.figma.com/proto/EnUkq1tXmxfazQ7Uikmft5/Project-Capstone?type=design&node-id=35-117&scaling=scale-down&page-id=0%3A1&starting-point-node-id=35%3A117
+  - Link Figma Hi-Fi * https://www.figma.com/file/EnUkq1tXmxfazQ7Uikmft5/Project-Capstone?type=design&node-id=0%3A1&t=jEphhzbAV2ql0IG2-1
+  - Link Apps * https://drive.google.com/file/d/1CWNUyfLWHj1oNkrgvjzD5fcBpycawuOS/view?usp=share_link
   
 ## Abstract
 The skin is the first organ to be exposed to external stimuli, including temperature, touch, and other stimuli, so that skin disease is the most common type of disease and spreads quickly in humans. Accurate identification of skin diseases is very important in the treatment of skin diseases. However, sometimes doctors have difficulty identifying the right type of skin disease because several types of skin disease have similar symptoms or almost the same color and texture. To assist doctors in identifying the types of skin diseases, we try to make a study to identify the types of skin diseases using an image data processing system.
