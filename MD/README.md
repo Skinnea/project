@@ -1,5 +1,5 @@
-# ProjectCapstone.C23-PS025
-Skinnea Apps
+# Skinnea Apps
+ProjectCapstone.C23-PS025
 
 # Preview 
 ![lv_0_20230531030245](https://github.com/Skinnea/project/assets/46983155/00541a9c-d8d4-459a-9937-20768ac88737)
@@ -23,3 +23,6 @@ Skinnea Apps
 
 # IDE
 - Android Studio
+
+# Languange
+- Kotlin
