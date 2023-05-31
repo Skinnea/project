@@ -1,6 +1,6 @@
 # **Skinnea - Capstone Project Bangkit 2023**
 
-### Task List
+## **Task List**
 **1. Machine Learning**
   * Datasets **(done)** 
   * Pre-processing **(done)**
