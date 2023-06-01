@@ -4,7 +4,7 @@
 **1. Machine Learning**
   * Datasets **(done)** 
   * Pre-processing **(done)**
-  * Training and validation **(on going)**
+  * Training and validation **(done)**
   * Testing **(not yet)**
 
 **2. Cloud Computing**
