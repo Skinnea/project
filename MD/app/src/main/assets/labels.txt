@@ -1,2 +1,3 @@
-Benign
-Malignant
+Atopic Dermatitis
+Poisin lvy
+Scabies Lyme
