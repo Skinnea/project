@@ -6,8 +6,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +15,6 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -31,13 +28,12 @@ import java.io.File
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private lateinit var classifierSkin: ClassifierSkin
-    private lateinit var bitmap: Bitmap
+    private lateinit var image: Bitmap
     private var imageCapture: ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private val model = "model.tflite"
     private val label = "labels.txt"
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCameraBinding.inflate(layoutInflater)
@@ -61,12 +57,12 @@ class CameraActivity : AppCompatActivity() {
             startCamera()
         }
         binding.previewImage.uploadButton.setOnClickListener {
+            playAnimationRestart()
             val intent = Intent(this@CameraActivity, DetailActivity::class.java)
             val resultText = binding.previewImage.result.text.toString()
             intent.putExtra("resultText", resultText)
-            intent.putExtra("imageResult", bitmap)
+            intent.putExtra("imageResult", image)
             startActivity(intent)
-            finish()
         }
         binding.previewImage.againButton.setOnClickListener {
             playAnimationRestart()
@@ -130,29 +126,14 @@ class CameraActivity : AppCompatActivity() {
                         file
                     }
                     if (myFile != null) {
-                        val imgScan = compressBitmap(myFile.path, 200)
+                        val imgScan = reduceImage(myFile.path)
                         binding.previewImage.previewImageView.setImageBitmap(imgScan)
                         resultScan(imgScan)
-                        bitmap = imgScan
+                        image = imgScan
                         playAnimation()
                     }
                 }
             }
-        )
-    }
-
-    private fun compressBitmap(filePath: String, maxWidth: Int): Bitmap {
-        val bitmap = BitmapFactory.decodeFile(filePath)
-        val matrix = Matrix()
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, maxWidth, maxWidth, false)
-        return Bitmap.createBitmap(
-            scaledBitmap,
-            0,
-            0,
-            scaledBitmap.width,
-            scaledBitmap.height,
-            matrix,
-            true
         )
     }
 
@@ -170,11 +151,12 @@ class CameraActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val selectedImg = result.data?.data as Uri
             selectedImg.let { uri ->
-                playAnimation()
-                val imgScan = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
-                binding.previewImage.previewImageView.setImageURI(uri)
+                val myFile = uriToFile(uri, this@CameraActivity)
+                val imgScan = reduceImage(myFile.path)
+                binding.previewImage.previewImageView.setImageBitmap(imgScan)
                 resultScan(imgScan)
-                bitmap = imgScan
+                image = imgScan
+                playAnimation()
             }
         }
     }
