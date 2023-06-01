@@ -4,17 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.projectcapstones.BuildConfig
 import com.example.projectcapstones.network.ApiService
+import com.example.projectcapstones.network.ArticlesItem
 
 class NewsRepository(
     private val apiService: ApiService
 ) {
-    fun getHeadlineNews(query: String = ""): LiveData<ResultNews<List<NewsEntity>>> = liveData {
+    fun getHeadlineNews(query: String = ""): LiveData<ResultNews<List<ArticlesItem>>> = liveData {
         emit(ResultNews.Loading)
         try {
             val response = apiService.getNews(BuildConfig.API_KEY_NEWS, q = query)
             val articles = response.articles
             val newsList = articles.map { article ->
-                NewsEntity(
+                ArticlesItem(
                     article.title,
                     article.publishedAt,
                     article.author,
