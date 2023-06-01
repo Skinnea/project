@@ -17,8 +17,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        buildConfigField("String", "API_KEY_NEWS", '"9c18478d078942e496eb47e0f9c2303c"')
-        buildConfigField("String", "API_KEY_CHAT", '"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"')
+        buildConfigField("String", "API_KEY_NEWS", '"f0018338d1d34bffae5b215efd5f504b"')
+        buildConfigField("String", "API_KEY_CHAT", '"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"')
     }
 
     buildTypes {
@@ -60,7 +60,7 @@ dependencies {
     implementation "androidx.camera:camera-view:1.2.3"
     implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
-    implementation 'com.google.firebase:firebase-database-ktx:20.2.1'
+    implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
     implementation 'com.firebaseui:firebase-ui-database:8.0.0'
     implementation 'com.github.bumptech.glide:glide:4.15.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -73,5 +73,5 @@ dependencies {
     implementation "androidx.room:room-ktx:2.5.1"
     implementation "androidx.activity:activity-ktx:1.7.2"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'org.tensorflow:tensorflow-lite:1.14.0'
+    implementation 'org.tensorflow:tensorflow-lite:2.3.0'
 }
