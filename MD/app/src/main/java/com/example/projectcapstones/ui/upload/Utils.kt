@@ -1,7 +1,6 @@
 package com.example.projectcapstones.ui.upload
 
 import android.app.Application
-import android.content.ContentResolver
 import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.Bitmap
@@ -9,7 +8,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
-import com.example.projectcapstones.R
+import androidx.exifinterface.media.ExifInterface
 import org.tensorflow.lite.Interpreter
 import java.io.*
 import java.nio.ByteBuffer
@@ -26,37 +25,70 @@ val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Syst
 fun createCustomTempFile(context: Context): File =
     File.createTempFile(timeStamp, ".jpg", context.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
 
-fun createFile(application: Application): File {
-    val mediaDir = application.externalMediaDirs.firstOrNull()?.let {
-        File(it, application.resources.getString(R.string.app_name)).apply { mkdirs() }
-    }
-    val outputDirectory = mediaDir ?: application.filesDir
-    return File(outputDirectory, "$timeStamp.jpg")
-}
+fun createFile(application: Application): File =
+    File(application.getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: application.filesDir, "$timeStamp.jpg")
 
 fun rotateFile(file: File, isBackCamera: Boolean = false) {
     val matrix = Matrix().apply {
         postRotate(if (isBackCamera) 90f else -90f)
         if (!isBackCamera) {
-            val bitmap = BitmapFactory.decodeFile(file.path)
-            postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
+            BitmapFactory.decodeFile(file.path)?.run {
+                postScale(-1f, 1f, width / 2f, height / 2f)
+            }
         }
     }
-    val bitmap = BitmapFactory.decodeFile(file.path)
-    val result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-    result.compress(Bitmap.CompressFormat.JPEG, 100, FileOutputStream(file))
+    BitmapFactory.decodeFile(file.path)?.let { bitmap ->
+        Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)?.let { result ->
+            FileOutputStream(file).use { outputStream ->
+                result.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            }
+        }
+    }
 }
 
-
 fun uriToFile(selectedImg: Uri, context: Context): File {
-    val contentResolver: ContentResolver = context.contentResolver
     val myFile = createCustomTempFile(context)
-    contentResolver.openInputStream(selectedImg)?.use { inputStream ->
+    context.contentResolver.openInputStream(selectedImg)?.use { inputStream ->
         FileOutputStream(myFile).use { outputStream ->
             inputStream.copyTo(outputStream)
         }
     }
+
+    try {
+        ExifInterface(myFile.path).run {
+            val rotateAngle = when (getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> 90f
+                ExifInterface.ORIENTATION_ROTATE_180 -> 180f
+                ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+                else -> 0f
+            }
+            val matrix = Matrix().apply { postRotate(rotateAngle) }
+            BitmapFactory.decodeFile(myFile.path)?.let { bitmap ->
+                Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)?.let { result ->
+                    FileOutputStream(myFile).use { result.compress(Bitmap.CompressFormat.JPEG, 100, it) }
+                }
+            }
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
     return myFile
+}
+
+fun reduceImage(filePath: String): Bitmap {
+    BitmapFactory.decodeFile(filePath)?.let { bitmap ->
+        val matrix = Matrix().apply {
+            postRotate(ExifInterface(filePath).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL).toFloat())
+        }
+        val scaleFactor = if (bitmap.width > 300) {
+            300.toFloat() / bitmap.width.toFloat()
+        } else {
+            1f
+        }
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, (bitmap.width * scaleFactor).toInt(), (bitmap.height * scaleFactor).toInt(), false)
+        return Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.width, scaledBitmap.height, matrix, true)
+    }
+    throw IOException("Failed to decode bitmap from file: $filePath")
 }
 
 class ClassifierSkin(
@@ -130,11 +162,11 @@ class ClassifierSkin(
                 pq.add(Recognition("" + i, labelList.getOrNull(i) ?: "Unknown", confidence))
             }
         }
-        val recognitions = ArrayList<Recognition>()
+        val scanning = ArrayList<Recognition>()
         val recognitionsSize = minOf(pq.size, maxResults)
         repeat(recognitionsSize) {
-            pq.poll()?.let { recognitions.add(it) }
+            pq.poll()?.let { scanning.add(it) }
         }
-        return recognitions
+        return scanning
     }
 }
