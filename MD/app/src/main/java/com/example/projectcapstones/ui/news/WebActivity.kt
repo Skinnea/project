@@ -10,7 +10,8 @@ import com.example.projectcapstones.databinding.ActivityWebBinding
 
 class WebActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWebBinding
-    private var pageSuccess = false
+    private var ispageSuccess = false
+    private lateinit var webView: WebView
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,18 +19,34 @@ class WebActivity : AppCompatActivity() {
         binding = ActivityWebBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.title = "Skinnea News Web"
-        val webView = binding.webView
+        webView = binding.webView
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
-                if (!pageSuccess) {
+                if (!ispageSuccess) {
                     view.loadUrl("javascript:alert('Web berhasil dimuat')")
-                    pageSuccess = true
+                    ispageSuccess = true
                 }
             }
         }
         webView.webChromeClient = object : WebChromeClient() {}
-        val url = intent.getStringExtra("url")
-        webView.loadUrl(url.toString())
+        savedInstanceState?.let {
+            webView.restoreState(it)
+            ispageSuccess = true
+        } ?: run {
+            val url = intent.getStringExtra("url")
+            webView.loadUrl(url.toString())
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        webView.saveState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        webView.restoreState(savedInstanceState)
+        ispageSuccess = true
     }
 }
