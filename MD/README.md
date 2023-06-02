@@ -14,7 +14,8 @@
 
 ### Resources :
 - API News > https://newsapi.org/s/indonesia-health-news-api
-- API Chat > https://platform.openai.com/docs/models/overview
+- API Chat > https://platform.openai.com/docs/api-reference 
+(* tokennya abis :v, lagi gabisa dulu chat) 
 - Firebase
 
 ### Design
