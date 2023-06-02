@@ -22,6 +22,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.projectcapstones.databinding.ActivityCameraBinding
+import com.example.projectcapstones.ui.configcamera.*
 import com.example.projectcapstones.ui.detail.DetailActivity
 import java.io.File
 

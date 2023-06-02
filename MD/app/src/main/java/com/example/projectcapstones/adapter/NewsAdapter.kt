@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectcapstones.databinding.ItemListNewsBinding
-import com.example.projectcapstones.network.ArticlesItem
+import com.example.projectcapstones.response.ArticlesItem
 
 class NewsAdapter(private val onItemClick: (ArticlesItem) -> Unit) : ListAdapter<ArticlesItem, NewsAdapter.MyViewHolder>(
     DIFF_CALLBACK

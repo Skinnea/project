@@ -9,6 +9,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectcapstones.R
 import com.example.projectcapstones.message.Message
@@ -16,18 +17,16 @@ import java.util.*
 import com.example.projectcapstones.adapter.ChatAdapter
 import com.example.projectcapstones.databinding.ActivityChatBinding
 import com.example.projectcapstones.network.ApiConfig
+import com.example.projectcapstones.result.ResultChat
 import com.example.projectcapstones.ui.login.LoginActivity.Companion.NAME
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import okio.IOException
-import org.json.JSONException
-import org.json.JSONObject
+import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
     private lateinit var messages: MutableList<Message>
     private lateinit var messageAdapter: ChatAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
@@ -36,8 +35,8 @@ class ChatActivity : AppCompatActivity() {
         messages = ArrayList()
         messageAdapter = ChatAdapter(messages)
         binding.rvlistChat.adapter = messageAdapter
-        val manager  = LinearLayoutManager(this)
-        manager .stackFromEnd = true
+        val manager = LinearLayoutManager(this)
+        manager.stackFromEnd = true
         binding.rvlistChat.layoutManager = manager
         binding.adminProfile.buttonCall.setOnClickListener {
             val phoneNumber = "089520480880"
@@ -49,7 +48,9 @@ class ChatActivity : AppCompatActivity() {
             if (chat.isNotEmpty()) {
                 addToChat(chat, Message.SENT_BY_USER)
                 binding.messageEditText.setText("")
-                botChatAi(chat)
+                lifecycleScope.launch {
+                    botChatAi(chat)
+                }
             } else {
                 Toast.makeText(this, "Tulis pesan terlebih dahulu", Toast.LENGTH_SHORT).show()
             }
@@ -84,7 +85,9 @@ class ChatActivity : AppCompatActivity() {
         if (messages.isEmpty()) {
             val initialMessage = "Halo, saya ingin bertanya terkait kesehatan kulit!"
             addToChat(initialMessage, Message.SENT_BY_USER)
-            botChatAi(initialMessage)
+            lifecycleScope.launch {
+                botChatAi(initialMessage)
+            }
         }
     }
 
@@ -93,29 +96,25 @@ class ChatActivity : AppCompatActivity() {
         addToChat(response, Message.SENT_BY_BOTCHAT)
     }
 
-    private fun botChatAi(chat: String) {
+    private suspend fun botChatAi(chat: String) {
         messages.add(Message("Sedang Mengetik... ", Message.SENT_BY_BOTCHAT))
-
-        ApiConfig.getApiChat(chat, object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                val errorMessage = getString(R.string.send_error) + " (" + e.message + ")"
-                addResponse(errorMessage)
+        val resultChat = ResultChat(prompt = chat)
+        val response = try {
+            ApiConfig.getApiChat().getChat(resultChat)
+        } catch (e: SocketTimeoutException) {
+            val errorMessage = getString(R.string.send_error) + " (" + e.message + ")"
+            addResponse(errorMessage)
+            return
+        }
+        if (response.isSuccessful) {
+            val result = response.body()?.choices?.firstOrNull()?.text
+            if (result != null) {
+                addResponse(result.trim())
+            } else {
+                addResponse(getString(R.string.send_error) + " (" + response.body()?.choices?.toString()+ ")")
             }
-
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful) {
-                    val jsonObject: JSONObject?
-                    try {
-                        jsonObject = JSONObject(response.body?.string().toString())
-                        addResponse(jsonObject.getJSONArray("choices").getJSONObject(0).getString("text").trim())
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                } else {
-                    addResponse(getString(R.string.send_error) + " (" + response.body?.toString()+ ")")
-                }
-            }
-        })
+        } else {
+            addResponse(getString(R.string.send_error) + " (" + response.code() + ")")
+        }
     }
 }

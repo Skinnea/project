@@ -8,7 +8,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import com.bumptech.glide.Glide
 import com.example.projectcapstones.databinding.ActivityDetailBinding
-import com.example.projectcapstones.repository.ResultSkinData
+import com.example.projectcapstones.data.SkinData
 
 @Suppress("DEPRECATION")
 class DetailActivity : AppCompatActivity() {
@@ -23,7 +23,7 @@ class DetailActivity : AppCompatActivity() {
         val getImgResult = intent.getParcelableExtra<Bitmap>("imageResult")
         binding.imgResult.setImageBitmap(getImgResult)
         if (resultText != null) {
-            val result = ResultSkinData.results.find { it.nameSkin == resultText }
+            val result = SkinData.results.find { it.nameSkin == resultText }
             if (result != null) {
                 binding.resultSkin.text = result.nameSkin
                 binding.descSkin.resultDescSkin.text = result.descSkin
