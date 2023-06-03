@@ -11,12 +11,13 @@
 ### Fitur extra :
 - Chat Bot Health
 - News Update Health
+- History Result Skin (coming soon)
 
 ### Resources :
 - API News > https://newsapi.org/s/indonesia-health-news-api
 - API Chat > https://platform.openai.com/docs/api-reference 
 (* tokennya abis :v, lagi gabisa dulu chat) 
-- Firebase
+- Firebase FireStore > https://firebase.google.com/docs/firestore
 
 ### Design
 - Canva
