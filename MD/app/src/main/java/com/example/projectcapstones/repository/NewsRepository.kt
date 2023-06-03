@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.projectcapstones.network.ApiService
 import com.example.projectcapstones.response.ArticlesItem
-import com.example.projectcapstones.result.ResultNews
+import com.example.projectcapstones.data.ResultNews
 
 class NewsRepository(
     private val apiService: ApiService

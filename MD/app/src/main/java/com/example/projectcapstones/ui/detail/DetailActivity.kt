@@ -8,7 +8,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import com.bumptech.glide.Glide
 import com.example.projectcapstones.databinding.ActivityDetailBinding
-import com.example.projectcapstones.data.SkinData
+import com.example.projectcapstones.database.SkinData
 
 @Suppress("DEPRECATION")
 class DetailActivity : AppCompatActivity() {
@@ -19,11 +19,22 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupView()
-        val resultText = intent.getStringExtra("resultText")
-        val getImgResult = intent.getParcelableExtra<Bitmap>("imageResult")
-        binding.imgResult.setImageBitmap(getImgResult)
-        if (resultText != null) {
-            val result = SkinData.results.find { it.nameSkin == resultText }
+        resultScan()
+    }
+
+    private fun resultScan(){
+        val getResultText = intent.getStringExtra("resultText")
+        val getImgUrl = intent.getStringExtra("imageResult")
+        val getImgBitmap = intent.getParcelableExtra<Bitmap>("imageResult")
+        if (getImgUrl != null) {
+            Glide.with(this)
+                .load(getImgUrl)
+                .into(binding.imgResult)
+        } else if (getImgBitmap != null) {
+            binding.imgResult.setImageBitmap(getImgBitmap)
+        }
+        if (getResultText != null) {
+            val result = SkinData.results.find { it.nameSkin == getResultText }
             if (result != null) {
                 binding.resultSkin.text = result.nameSkin
                 binding.descSkin.resultDescSkin.text = result.descSkin

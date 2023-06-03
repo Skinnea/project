@@ -17,7 +17,7 @@ import java.util.*
 import com.example.projectcapstones.adapter.ChatAdapter
 import com.example.projectcapstones.databinding.ActivityChatBinding
 import com.example.projectcapstones.network.ApiConfig
-import com.example.projectcapstones.result.ResultChat
+import com.example.projectcapstones.data.ResultChat
 import com.example.projectcapstones.ui.login.LoginActivity.Companion.NAME
 import kotlinx.coroutines.launch
 import java.net.SocketTimeoutException

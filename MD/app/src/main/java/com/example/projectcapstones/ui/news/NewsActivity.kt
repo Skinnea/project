@@ -16,7 +16,7 @@ import com.example.projectcapstones.databinding.ActivityNewsBinding
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectcapstones.R
-import com.example.projectcapstones.result.ResultNews
+import com.example.projectcapstones.data.ResultNews
 import com.example.projectcapstones.ui.web.WebActivity
 
 class NewsActivity : AppCompatActivity() {

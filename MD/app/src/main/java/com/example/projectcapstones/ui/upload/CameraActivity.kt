@@ -21,9 +21,15 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.projectcapstones.configcamera.*
+import com.example.projectcapstones.data.ResultSkin
+import com.example.projectcapstones.database.SkinData
 import com.example.projectcapstones.databinding.ActivityCameraBinding
-import com.example.projectcapstones.ui.configcamera.*
 import com.example.projectcapstones.ui.detail.DetailActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 class CameraActivity : AppCompatActivity() {
@@ -59,6 +65,7 @@ class CameraActivity : AppCompatActivity() {
         }
         binding.previewImage.uploadButton.setOnClickListener {
             playAnimationRestart()
+            uploadHistory()
             val intent = Intent(this@CameraActivity, DetailActivity::class.java)
             val resultText = binding.previewImage.result.text.toString()
             intent.putExtra("resultText", resultText)
@@ -70,10 +77,52 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
-    private fun resultScan(imgScan: Bitmap) {
+    private fun resultScan(imgScan: Bitmap): ClassifierSkin.Recognition? {
         val results = classifierSkin.scanImage(imgScan).firstOrNull()
         binding.previewImage.result.text = results?.title
         binding.previewImage.accurate.text = results?.confidence.toString()
+        return results
+    }
+
+    private fun uploadHistory() {
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.reference
+        val outputStream = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        val data = outputStream.toByteArray()
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val folderName = "images/$user"
+            val fileName = "image_${System.currentTimeMillis()}.jpg"
+            val imageRef = storageRef.child("$folderName/$fileName")
+            val uploadTask = imageRef.putBytes(data)
+            uploadTask.addOnFailureListener {
+            }.addOnSuccessListener {
+                imageRef.downloadUrl.addOnSuccessListener { uri ->
+                    val downloadUrl = uri.toString()
+                    val firestore = FirebaseFirestore.getInstance()
+                    val results = resultScan(image)
+                    val resultSkinData = SkinData.results.find { it.nameSkin == results?.title }
+                    if (resultSkinData != null) {
+                        val result = ResultSkin(
+                            nameSkin = resultSkinData.nameSkin,
+                            descSkin = resultSkinData.descSkin,
+                            urlImgMedic = resultSkinData.urlImgMedic,
+                            nameMedic = resultSkinData.nameMedic,
+                            suggestMedic = resultSkinData.suggestMedic,
+                            descMedic = resultSkinData.descMedic,
+                            imageUrl = downloadUrl,
+                            timestamp = System.currentTimeMillis()
+                        )
+                        firestore.collection("users")
+                            .document(user.uid)
+                            .collection("results")
+                            .document()
+                            .set(result)
+                    }
+                }
+            }
+        }
     }
 
     private fun startCamera() {
@@ -164,7 +213,8 @@ class CameraActivity : AppCompatActivity() {
 
     private fun playAnimation() {
         binding.progressBar.visibility = View.VISIBLE
-        val previewImg = ObjectAnimator.ofFloat(binding.previewImage.root, View.ALPHA, 1f).setDuration(200)
+        val previewImg =
+            ObjectAnimator.ofFloat(binding.previewImage.root, View.ALPHA, 1f).setDuration(200)
         val animatorSet = AnimatorSet().apply {
             playSequentially(previewImg)
             startDelay = 200
@@ -191,6 +241,7 @@ class CameraActivity : AppCompatActivity() {
         binding.captureImage.isClickable = true
         binding.switchCamera.isClickable = true
     }
+
     public override fun onResume() {
         super.onResume()
         startCamera()

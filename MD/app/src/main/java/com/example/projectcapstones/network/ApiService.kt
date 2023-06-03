@@ -4,7 +4,7 @@ import com.example.projectcapstones.BuildConfig.API_KEY_CHAT
 import com.example.projectcapstones.BuildConfig.API_KEY_NEWS
 import com.example.projectcapstones.response.ChatResponse
 import com.example.projectcapstones.response.NewsResponse
-import com.example.projectcapstones.result.ResultChat
+import com.example.projectcapstones.data.ResultChat
 import retrofit2.Response
 import retrofit2.http.*
 
