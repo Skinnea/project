@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.home.MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontal"
@@ -54,10 +54,23 @@
         android:clickable="false"
         android:contentDescription="@string/camera_button_description"
         app:layout_constraintBottom_toBottomOf="@+id/buttonMenu"
+        app:layout_constraintEnd_toEndOf="@+id/buttonChat"
+        app:layout_constraintStart_toStartOf="@+id/buttonChat"
+        app:layout_constraintTop_toTopOf="@+id/buttonMenu"
+        app:srcCompat="@drawable/baseline_camera_alt_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:clickable="false"
+        android:contentDescription="@string/camera_button_description"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonMenu"
         app:layout_constraintEnd_toEndOf="@+id/buttonAbout"
         app:layout_constraintStart_toStartOf="@+id/buttonAbout"
         app:layout_constraintTop_toTopOf="@+id/buttonMenu"
-        app:srcCompat="@drawable/baseline_camera_alt_24" />
+        app:srcCompat="@drawable/baseline_chat_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonAbout"

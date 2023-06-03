@@ -32,6 +32,7 @@
     <string name="about_button_description">about</string>
     <string name="menu_button_description">camera</string>
     <string name="logowelcome_description">selamat datang</string>
+    <string name="logohistory_description">history result</string>
     <string name="logomenu1_description">logo</string>
     <string name="logomenu2_description">logo2</string>
     <string name="logomenu3_description">logo3</string>
@@ -42,9 +43,11 @@
     <string name="previewImageView_description">preview gambar</string>
     <string name="sendButton_description">kirim pesan</string>
     <string name="openWeb_description">lihat berita</string>
+    <string name="openDetail_description">lihat detail</string>
     <string name="ivMessenger_description">pengguna</string>
     <string name="buttonLogout_description">logout</string>
     <string name="imgProfile_description">profile</string>
+    <string name="imgSkin_description">skin result</string>
     <string name="detailPhoto_description">detail gambar</string>
     <string name="news">News</string>
     <string name="newsImgError_description">error</string>
