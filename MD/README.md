@@ -2,11 +2,13 @@
 ## ProjectCapstone.C23-PS025
 
 ### Preview 
-* ![lv_0_20230531030245](https://github.com/Skinnea/project/assets/46983155/00541a9c-d8d4-459a-9937-20768ac88737)
-![lv_0_20230531025939](https://github.com/Skinnea/project/assets/46983155/d41a28ae-44e6-4231-ada6-58fb46b117be)
-![lv_0_20230602051811](https://github.com/Skinnea/project/assets/46983155/366701f2-f1ff-48d8-84fe-8a143a6a21ea)
-* ![lv_0_20230531220531](https://github.com/Skinnea/project/assets/46983155/9fe9a4b5-afaf-492c-b6fc-e527a1f48e22)
-![lv_0_20230531223904](https://github.com/Skinnea/project/assets/46983155/26a0a254-bf49-4cfb-97aa-da500b22875e)
+* ![lv_0_20230603223005](https://github.com/Skinnea/project/assets/46983155/848838dd-8735-4e52-a1ae-8da978359673)
+![lv_0_20230603223303](https://github.com/Skinnea/project/assets/46983155/db4ad587-c272-4c65-a5f4-74a404f8224c)
+![lv_0_20230603223545](https://github.com/Skinnea/project/assets/46983155/8e96c77f-385e-45bb-a075-533b2668bd7c)
+
+* ![lv_0_20230603223032](https://github.com/Skinnea/project/assets/46983155/0ff5b64f-b146-4f3d-8fc6-3af13a270d40)
+![lv_0_20230603223513](https://github.com/Skinnea/project/assets/46983155/56e5461b-dbf8-4c89-8ec5-4bac800c28d9)
+![lv_0_20230603223144](https://github.com/Skinnea/project/assets/46983155/011897f5-6ceb-433d-b8f0-2fef1f3f54ea)
 
 ### Fitur extra :
 - Chat Bot Health
