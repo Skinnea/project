@@ -13,7 +13,7 @@
 ### Fitur extra :
 - Chat Bot Health
 - News Update Health
-- History Result Skin (coming soon)
+- History Result Skin (need google auth)
 
 ### Resources :
 - API News > https://newsapi.org/s/indonesia-health-news-api
