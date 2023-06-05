@@ -31,9 +31,12 @@ In this research, we try to build a machine learning model that can recognize ty
 
 
 ### **Skinnea Team**
-* (ML) M296DKX4057 – Dzikri Faizziyan
-* (ML) M182DSX0465 – Muhammad Zidan Hendriyadi
-* (ML) M268DSY2500 – Nahla Tarisafitri
-* (CC) C172DSX2899 – Aldi Febriyanto
-* (CC) C172DSX2236 – Muhammad Faiz Abrar Fatah
-* (MD) A084DKX4507 – Pandu Prastiyo Aji
+
+|              Name              | Bangkit-ID  |   Learning Path    |                             Contact Link                                  |
+| :----------------------------: | :--------:  | :----------------: | :----------------------------------------------------------------------:  |
+|        Dzikri Faizziyan        | M296DKX4057 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/)                  |
+|   Muhammad Zidan Hendriyadi    | M182DSX0465 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/)                  |
+|       Nahla Tarisafitri        | M268DSY2500 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/)                  |
+|       Pandu Prastiyo Aji       | A084DKX4507 | Mobile Development |                 [LinkedIn](https://www.linkedin.com/in/)                  |
+|         Aldi Febriyanto        | C172DSX2899 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/)                  |
+|    Muhammad Faiz Abrar Fatah   | C172DSX2236 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/muhfaiz)           |
