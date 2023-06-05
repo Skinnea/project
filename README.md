@@ -8,8 +8,8 @@
   * Testing **(not yet)**
 
 **2. Cloud Computing**
-  * Build an backend API **(on going)**
-  * Deploy **(not yet)**
+  * Build an backend API **(done)**
+  * Deploy **(done)**
 
 **3. Mobile Development**
   * User Authentication **(done)**
