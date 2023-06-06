@@ -11,9 +11,9 @@
 ![lv_0_20230603223144](https://github.com/Skinnea/project/assets/46983155/011897f5-6ceb-433d-b8f0-2fef1f3f54ea)
 
 ### Fitur extra :
-- Chat Admin Langsung (Owner and Customer)
+- Chat Admin Langsung (need Auth Google)
 - News Update Health
-- History Result Skin (need google auth)
+- History Result Skin (need Auth Google)
 
 ### Resources :
 - API News > https://newsapi.org/s/indonesia-health-news-api
