@@ -16,13 +16,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.projectcapstones.databinding.ActivityMainBinding
 import android.Manifest
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.example.projectcapstones.ui.about.AboutActivity
 import com.example.projectcapstones.ui.login.LoginActivity
 import com.example.projectcapstones.ui.chat.ChatActivity
@@ -31,8 +27,8 @@ import com.example.projectcapstones.ui.upload.CameraActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.bumptech.glide.request.target.Target
 import com.example.projectcapstones.R
+import com.example.projectcapstones.ui.listuser.ListUserActivity
 import com.example.projectcapstones.ui.history.HistoryActivity
 
 class MainActivity : AppCompatActivity() {
@@ -74,9 +70,12 @@ class MainActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.loadProfileData()
         auth = Firebase.auth
+        val firebaseUser = auth.currentUser
+        if (firebaseUser == null) {
+            val name = "Guest"
+            binding.menuCard.greetingText.text = name
+        }
         setupView()
         setupButton()
         profile()
@@ -98,37 +97,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun profile() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.loadProfileData()
-        viewModel.observeProfileData(this) { profileData ->
-            binding.itemProfile.nameProfile.text = profileData.name
-            binding.itemProfile.emailProfile.text = profileData.email
-            Glide.with(this)
-                .load(profileData.photoUrl)
-                .addListener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        return false
-                    }
-
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        binding.itemProfile.imgProfile.setImageDrawable(resource)
-                        binding.menuCard.greetingText.text =
-                            getString(R.string.welcome, profileData.name.substringBefore(" "))
-                        return true
-                    }
-                })
-                .into(binding.itemProfile.imgProfile)
+        viewModel.profileData.observe(this) { profileData ->
+            profileData?.let {
+                binding.itemProfile.nameProfile.text = it.displayName
+                binding.itemProfile.emailProfile.text = it.email
+                Glide.with(this)
+                    .load(it.photoUrl)
+                    .into(binding.itemProfile.imgProfile)
+                binding.menuCard.greetingText.text = getString(R.string.welcome, it.displayName?.substringBefore(" "))
+            }
         }
+        viewModel.getProfile()
     }
 
     override fun onResume() {
@@ -202,13 +181,29 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, CameraActivity::class.java))
         }
         binding.buttonChat.setOnClickListener {
-            startActivity(Intent(this, ChatActivity::class.java))
+            val firebaseUser = auth.currentUser
+            if (firebaseUser == null) {
+                AlertDialog.Builder(this@MainActivity).apply {
+                    setTitle("Maaf!")
+                    setMessage("Anda perlu login google terlebih dahulu")
+                    setPositiveButton("Oke") { _, _ ->
+                    }
+                    setCancelable(false)
+                    create()
+                    show()
+                }
+            } else {
+                if (firebaseUser.uid == "VZQb2hCvPpbLgCAt3c8kMfYXrGN2") {
+                    startActivity(Intent(this, ListUserActivity::class.java))
+                } else {
+                    startActivity(Intent(this, ChatActivity::class.java))
+                }
+            }
         }
         binding.buttonAbout.setOnClickListener {
             startActivity(Intent(this, AboutActivity::class.java))
         }
         binding.menuCard.cardMenu2.setOnClickListener {
-            auth = Firebase.auth
             val firebaseUser = auth.currentUser
             if (firebaseUser == null) {
                 AlertDialog.Builder(this@MainActivity).apply {

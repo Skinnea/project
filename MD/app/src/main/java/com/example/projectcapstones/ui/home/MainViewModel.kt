@@ -1,29 +1,21 @@
 package com.example.projectcapstones.ui.home
 
 import androidx.lifecycle.*
-import com.example.projectcapstones.ui.login.LoginActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class MainViewModel : ViewModel() {
-    private val _profileData = MutableLiveData<ProfileData>()
-    private val profileData: LiveData<ProfileData> = _profileData
+    private val _profileData = MutableLiveData<FirebaseUser?>()
+    val profileData: MutableLiveData<FirebaseUser?> = _profileData
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    fun loadProfileData() {
-        val profile = ProfileData(
-            LoginActivity.NAME,
-            LoginActivity.EMAIL,
-            LoginActivity.PHOTO
-        )
-        _profileData.postValue(profile)
+    fun getProfile() {
+        val currentUser: FirebaseUser? = auth.currentUser
+        if (currentUser != null) {
+            currentUser.displayName
+            currentUser.photoUrl?.toString()
+            currentUser.email
+            _profileData.value = currentUser
+        }
     }
-
-    fun observeProfileData(owner: LifecycleOwner, observer: Observer<ProfileData>) {
-        profileData.observe(owner, observer)
-    }
-
-
-    data class ProfileData(
-        val name: String,
-        val email: String,
-        val photoUrl: String
-    )
 }

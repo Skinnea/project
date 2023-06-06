@@ -29,7 +29,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
@@ -39,7 +38,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        playAnimation()
         val gso = GoogleSignInOptions
             .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -55,19 +53,7 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
         setupView()
-    }
-
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
+        playAnimation()
     }
 
     private fun signIn() {
@@ -103,15 +89,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null){
-            NAME = currentUser.displayName ?: ""
-            EMAIL = currentUser.email ?: ""
-            PHOTO = (currentUser.photoUrl ?: "").toString()
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
-        } else {
-            NAME = "Guest"
-            EMAIL = "non-email"
-            PHOTO = "https://p.kindpng.com/picc/s/495-4952535_create-digital-profile-icon-blue-user-profile-icon.png"
         }
     }
 
@@ -128,7 +107,6 @@ class LoginActivity : AppCompatActivity() {
             repeatCount = ObjectAnimator.INFINITE
             repeatMode = ObjectAnimator.REVERSE
         }.start()
-
         val login = ObjectAnimator.ofFloat(binding.imageViewWelcome, View.ALPHA, 1f).setDuration(200)
         val header = ObjectAnimator.ofFloat(binding.imageViewHeader, View.ALPHA, 1f).setDuration(200)
         val buttonLogin = ObjectAnimator.ofFloat(binding.signInButton, View.ALPHA, 1f).setDuration(200)
@@ -142,9 +120,16 @@ class LoginActivity : AppCompatActivity() {
         }.start()
     }
 
-    companion object {
-        var NAME = ""
-        var EMAIL = ""
-        var PHOTO = ""
+    private fun setupView() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
     }
 }

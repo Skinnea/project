@@ -5,11 +5,12 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -21,25 +22,26 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.example.projectcapstones.configcamera.*
-import com.example.projectcapstones.data.ResultSkin
-import com.example.projectcapstones.database.SkinData
+import com.example.projectcapstones.configcamera.createFile
+import com.example.projectcapstones.configcamera.reduceFileImage
+import com.example.projectcapstones.configcamera.rotateFile
+import com.example.projectcapstones.configcamera.uriToFile
 import com.example.projectcapstones.databinding.ActivityCameraBinding
-import com.example.projectcapstones.ui.detail.DetailActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import java.io.ByteArrayOutputStream
+import com.example.projectcapstones.network.ApiConfig
+import com.example.projectcapstones.response.FileUploadResponse
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
-    private lateinit var classifierSkin: ClassifierSkin
-    private lateinit var image: Bitmap
     private var imageCapture: ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-    private val model = "model.tflite"
-    private val label = "labels.txt"
+    private var getFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,82 +49,6 @@ class CameraActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupButton()
         setupView()
-        classifierSkin = ClassifierSkin(assets, model, label)
-    }
-
-    private fun setupButton() {
-        binding.captureImage.setOnClickListener {
-            takePhoto()
-        }
-        binding.galleryImage.setOnClickListener {
-            startGallery()
-        }
-        binding.switchCamera.setOnClickListener {
-            cameraSelector =
-                if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
-                else CameraSelector.DEFAULT_BACK_CAMERA
-            startCamera()
-        }
-        binding.previewImage.uploadButton.setOnClickListener {
-            playAnimationRestart()
-            uploadHistory()
-            val intent = Intent(this@CameraActivity, DetailActivity::class.java)
-            val resultText = binding.previewImage.result.text.toString()
-            intent.putExtra("resultText", resultText)
-            intent.putExtra("imageResult", image)
-            startActivity(intent)
-        }
-        binding.previewImage.againButton.setOnClickListener {
-            playAnimationRestart()
-        }
-    }
-
-    private fun resultScan(imgScan: Bitmap): ClassifierSkin.Recognition? {
-        val results = classifierSkin.scanImage(imgScan).firstOrNull()
-        binding.previewImage.result.text = results?.title
-        binding.previewImage.accurate.text = results?.confidence.toString()
-        return results
-    }
-
-    private fun uploadHistory() {
-        val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference
-        val outputStream = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        val data = outputStream.toByteArray()
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            val folderName = "images/$user"
-            val fileName = "image_${System.currentTimeMillis()}.jpg"
-            val imageRef = storageRef.child("$folderName/$fileName")
-            val uploadTask = imageRef.putBytes(data)
-            uploadTask.addOnFailureListener {
-            }.addOnSuccessListener {
-                imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    val downloadUrl = uri.toString()
-                    val firestore = FirebaseFirestore.getInstance()
-                    val results = resultScan(image)
-                    val resultSkinData = SkinData.results.find { it.nameSkin == results?.title }
-                    if (resultSkinData != null) {
-                        val result = ResultSkin(
-                            nameSkin = resultSkinData.nameSkin,
-                            descSkin = resultSkinData.descSkin,
-                            urlImgMedic = resultSkinData.urlImgMedic,
-                            nameMedic = resultSkinData.nameMedic,
-                            suggestMedic = resultSkinData.suggestMedic,
-                            descMedic = resultSkinData.descMedic,
-                            imageUrl = downloadUrl,
-                            timestamp = System.currentTimeMillis()
-                        )
-                        firestore.collection("users")
-                            .document(user.uid)
-                            .collection("results")
-                            .document()
-                            .set(result)
-                    }
-                }
-            }
-        }
     }
 
     private fun startCamera() {
@@ -176,10 +102,12 @@ class CameraActivity : AppCompatActivity() {
                         file
                     }
                     if (myFile != null) {
-                        val imgScan = reduceImage(myFile.path)
-                        binding.previewImage.previewImageView.setImageBitmap(imgScan)
-                        resultScan(imgScan)
-                        image = imgScan
+                        getFile = myFile
+                        binding.previewImage.previewImageView.setImageBitmap(
+                            BitmapFactory.decodeFile(
+                                myFile.path
+                            )
+                        )
                         playAnimation()
                     }
                 }
@@ -187,11 +115,28 @@ class CameraActivity : AppCompatActivity() {
         )
     }
 
+    private fun setupButton() {
+        binding.previewImage.againButton.setOnClickListener {
+            playAnimationRestart()
+        }
+        binding.galleryImage.setOnClickListener { startGallery() }
+        binding.captureImage.setOnClickListener { takePhoto() }
+        binding.switchCamera.setOnClickListener {
+            cameraSelector =
+                if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
+                else CameraSelector.DEFAULT_BACK_CAMERA
+            startCamera()
+        }
+        binding.previewImage.uploadButton.setOnClickListener {
+            uploadImage()
+        }
+    }
+
     private fun startGallery() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "Choose a Picture")
+        val chooser = Intent.createChooser(intent, "Silahkan Pilih Gambar")
         launcherIntentGallery.launch(chooser)
     }
 
@@ -202,12 +147,50 @@ class CameraActivity : AppCompatActivity() {
             val selectedImg = result.data?.data as Uri
             selectedImg.let { uri ->
                 val myFile = uriToFile(uri, this@CameraActivity)
-                val imgScan = reduceImage(myFile.path)
-                binding.previewImage.previewImageView.setImageBitmap(imgScan)
-                resultScan(imgScan)
-                image = imgScan
+                getFile = myFile
+                binding.previewImage.previewImageView.setImageURI(uri)
                 playAnimation()
             }
+        }
+    }
+
+    private fun uploadImage() {
+        if (getFile != null) {
+            val file = reduceFileImage(getFile as File)
+            val requestImageFile = file.asRequestBody("image/jpeg".toMediaType())
+            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                "input",
+                file.name,
+                requestImageFile
+            )
+            val apiService = ApiConfig.getApiSkinnea()
+            val uploadImageRequest = apiService.uploadImage(imageMultipart)
+            uploadImageRequest.enqueue(object : Callback<FileUploadResponse> {
+                override fun onResponse(
+                    call: Call<FileUploadResponse>,
+                    response: Response<FileUploadResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        if (responseBody != null) {
+                            val responseString = responseBody.responseBody
+                            Log.d("uplod1", (responseString ?: "").toString())
+                        } else {
+                            Log.d("uplod2", "Tidak ada hasil yang ditemukan.")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
+                    Log.e("uplod3", t.message ?: "")
+                }
+            })
+        } else {
+            Toast.makeText(
+                this@CameraActivity,
+                "Silakan masukkan berkas gambar terlebih dahulu.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

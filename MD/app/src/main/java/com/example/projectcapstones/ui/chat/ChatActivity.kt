@@ -1,61 +1,115 @@
 package com.example.projectcapstones.ui.chat
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectcapstones.R
-import com.example.projectcapstones.message.Message
-import java.util.*
 import com.example.projectcapstones.adapter.ChatAdapter
 import com.example.projectcapstones.databinding.ActivityChatBinding
-import com.example.projectcapstones.network.ApiConfig
-import com.example.projectcapstones.data.ResultChat
-import com.example.projectcapstones.ui.login.LoginActivity.Companion.NAME
-import kotlinx.coroutines.launch
-import java.net.SocketTimeoutException
+import com.example.projectcapstones.message.Message
+import com.example.projectcapstones.ui.login.LoginActivity
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.util.*
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
-    private lateinit var messages: MutableList<Message>
-    private lateinit var messageAdapter: ChatAdapter
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
+    private lateinit var adapter: ChatAdapter
+    private lateinit var userMessagesRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.adminProfile.adminStatus.text = getString(R.string.statusAdminProfile, NAME.substringBefore(" "))
-        messages = ArrayList()
-        messageAdapter = ChatAdapter(messages)
-        binding.rvlistChat.adapter = messageAdapter
+        auth = Firebase.auth
+        val firebaseUser = auth.currentUser
+        if (firebaseUser == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        }
+        if (firebaseUser.uid == "VZQb2hCvPpbLgCAt3c8kMfYXrGN2") {
+            binding.adminProfile.root.visibility = View.GONE
+        } else {
+            binding.adminProfile.root.visibility = View.VISIBLE
+            binding.adminProfile.adminStatus.text = getString(
+                R.string.statusAdminProfile,
+                firebaseUser.displayName?.substringBefore(" ") ?: ""
+            )
+            binding.adminProfile.buttonCall.setOnClickListener {
+                val phoneNumber = "089520480880"
+                val dialPhoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+                startActivity(dialPhoneIntent)
+            }
+        }
+        db = Firebase.database
+        val getUid = intent.getStringExtra("uid")
+        val messagesRef = db.reference.child(MESSAGES_CHILD)
+        val uid = firebaseUser.uid
+        userMessagesRef = if (getUid != null) {
+            messagesRef.child(getUid)
+        } else {
+            messagesRef.child(uid)
+        }
+        setupView()
+        binding.sendButton.setOnClickListener {
+            val friendlyMessage = Message(
+                binding.messageEditText.text.toString(),
+                firebaseUser.displayName.toString(),
+                firebaseUser.photoUrl.toString(),
+                Date().time
+            )
+            userMessagesRef.push().setValue(friendlyMessage) { error, _ ->
+                if (error != null) {
+                    Toast.makeText(this, getString(R.string.send_error) + error.message, Toast.LENGTH_SHORT).show()
+                } else {
+                    val user = hashMapOf(
+                        "uid" to firebaseUser.uid,
+                        "pesan" to binding.messageEditText.text.toString(),
+                        "nama" to firebaseUser.displayName.toString(),
+                        "poto" to firebaseUser.photoUrl.toString(),
+                        "waktu" to Date().time
+                    )
+                    Firebase.firestore.collection("CHAT")
+                        .add(user)
+                    Toast.makeText(this, getString(R.string.send_success), Toast.LENGTH_SHORT).show()
+                }
+            }
+            binding.messageEditText.setText("")
+        }
         val manager = LinearLayoutManager(this)
         manager.stackFromEnd = true
         binding.rvlistChat.layoutManager = manager
-        binding.adminProfile.buttonCall.setOnClickListener {
-            val phoneNumber = "089520480880"
-            val dialPhoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
-            startActivity(dialPhoneIntent)
-        }
-        binding.sendButton.setOnClickListener {
-            val chat = binding.messageEditText.text.toString().trim()
-            if (chat.isNotEmpty()) {
-                addToChat(chat, Message.SENT_BY_USER)
-                binding.messageEditText.setText("")
-                lifecycleScope.launch {
-                    botChatAi(chat)
-                }
-            } else {
-                Toast.makeText(this, "Tulis pesan terlebih dahulu", Toast.LENGTH_SHORT).show()
-            }
-        }
-        setupView()
+        val options = FirebaseRecyclerOptions.Builder<Message>()
+            .setQuery(userMessagesRef, Message::class.java)
+            .build()
+        adapter = ChatAdapter(options, firebaseUser.displayName)
+        binding.rvlistChat.adapter = adapter
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        adapter.startListening()
+    }
+
+    public override fun onPause() {
+        adapter.stopListening()
+        super.onPause()
     }
 
     private fun setupView() {
@@ -71,50 +125,7 @@ class ChatActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun addToChat(message: String, sentBy: String) {
-        runOnUiThread {
-            messages.add(Message(message, sentBy))
-            messageAdapter.notifyDataSetChanged()
-            binding.rvlistChat.smoothScrollToPosition(messageAdapter.itemCount)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (messages.isEmpty()) {
-            val initialMessage = "Halo, saya ingin bertanya terkait kesehatan kulit!"
-            addToChat(initialMessage, Message.SENT_BY_USER)
-            lifecycleScope.launch {
-                botChatAi(initialMessage)
-            }
-        }
-    }
-
-    private fun addResponse(response: String) {
-        messages.removeAt(messages.size - 1)
-        addToChat(response, Message.SENT_BY_BOTCHAT)
-    }
-
-    private suspend fun botChatAi(chat: String) {
-        messages.add(Message("Sedang Mengetik... ", Message.SENT_BY_BOTCHAT))
-        val resultChat = ResultChat(prompt = chat)
-        val response = try {
-            ApiConfig.getApiChat().getChat(resultChat)
-        } catch (e: SocketTimeoutException) {
-            val errorMessage = getString(R.string.send_error) + " (" + e.message + ")"
-            addResponse(errorMessage)
-            return
-        }
-        if (response.isSuccessful) {
-            val result = response.body()?.choices?.firstOrNull()?.text
-            if (result != null) {
-                addResponse(result.trim())
-            } else {
-                addResponse(getString(R.string.send_error) + " (" + response.body()?.choices?.toString()+ ")")
-            }
-        } else {
-            addResponse(getString(R.string.send_error) + " (" + response.code() + ")")
-        }
+    companion object {
+        const val MESSAGES_CHILD = "messages"
     }
 }

@@ -1,9 +1,16 @@
 package com.example.projectcapstones.message
 
+import com.google.firebase.database.IgnoreExtraProperties
 
-class Message(var message: String, var sentBy: String) {
-    companion object {
-        const val SENT_BY_USER = "user"
-        const val SENT_BY_BOTCHAT = "bot_chat"
-    }
+
+@IgnoreExtraProperties
+data class Message(
+    val text: String? = null,
+    val name: String? = null,
+    val photoUrl: String? = null,
+    val timestamp: Long? = null
+
+){
+    // Null default values create a no-argument default constructor, which is needed
+    // for deserialization from a DataSnapshot.
 }

@@ -2,7 +2,7 @@ package com.example.projectcapstones
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.projectcapstones.di.Injection
+import com.example.projectcapstones.repository.Injection
 import com.example.projectcapstones.repository.NewsRepository
 import com.example.projectcapstones.ui.news.NewsViewModel
 

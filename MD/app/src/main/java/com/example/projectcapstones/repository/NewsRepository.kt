@@ -9,7 +9,7 @@ import com.example.projectcapstones.data.ResultNews
 class NewsRepository(
     private val apiService: ApiService
 ) {
-    fun getHeadlineNews(query: String = ""): LiveData<ResultNews<List<ArticlesItem>>> = liveData {
+    fun getHeadlineNews(query: String): LiveData<ResultNews<List<ArticlesItem>>> = liveData {
         emit(ResultNews.Loading)
         try {
             val response = apiService.getNews(q = query)

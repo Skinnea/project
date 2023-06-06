@@ -1,6 +1,5 @@
-package com.example.projectcapstones.ui.history
+package com.example.projectcapstones.ui.listuser
 
-import android.animation.ObjectAnimator
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,30 +8,30 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.projectcapstones.adapter.HistoryAdapter
-import com.example.projectcapstones.databinding.ActivityHistoryBinding
+import com.example.projectcapstones.adapter.ListUserAdapter
+import com.example.projectcapstones.databinding.ActivityListUserBinding
 
-class HistoryActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityHistoryBinding
-    private lateinit var adapter: HistoryAdapter
-    private lateinit var viewModel: HistoryViewModel
+class ListUserActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityListUserBinding
+    private lateinit var adapter: ListUserAdapter
+    private lateinit var viewModel: ListUserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityHistoryBinding.inflate(layoutInflater)
+        binding = ActivityListUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        adapter = HistoryAdapter(this)
+        adapter = ListUserAdapter(this)
         binding.rvListHistory.adapter = adapter
         binding.rvListHistory.layoutManager = LinearLayoutManager(this)
-        viewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
-        viewModel.historyList.observe(this) { history ->
+        setupView()
+        viewModel = ViewModelProvider(this)[ListUserViewModel::class.java]
+        viewModel.listUser.observe(this) { userList ->
             binding.progressBar.visibility = View.VISIBLE
-            adapter.historySkin(history)
+            adapter.setUserList(userList)
             binding.progressBar.visibility = View.GONE
         }
-        viewModel.getHistory()
-        playAnimation()
-        setupView()
+        viewModel.getListUser()
     }
 
     private fun setupView() {
@@ -46,14 +45,5 @@ class HistoryActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-    }
-
-    private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageViewHistory, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 5000
-            startDelay = 500
-            repeatCount = ObjectAnimator.INFINITE
-            repeatMode = ObjectAnimator.REVERSE
-        }.start()
     }
 }

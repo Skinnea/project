@@ -6,9 +6,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig {
-    private var BASE_URL = "https://newsapi.org/v2/"
-    private const val BASE_URL_CHAT = "https://api.openai.com/v1/"
-
+    private var BASE_URL_NEWS = "https://newsapi.org/v2/"
+    private var BASE_URL_SKINNEA= "https://skinnea-wbd7cvw5ia-et.a.run.app/"
+    
     fun getApiNews(): ApiService {
         val loggingInterceptor = HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -16,23 +16,23 @@ object ApiConfig {
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL_NEWS)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
         return retrofit.create(ApiService::class.java)
     }
 
-    fun getApiChat(): ApiService {
-        val loggingInterceptor = HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
-        val httpClient = OkHttpClient.Builder()
+    fun getApiSkinnea(): ApiService {
+        val loggingInterceptor =
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL_CHAT)
-            .client(httpClient)
+            .baseUrl(BASE_URL_SKINNEA)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
         return retrofit.create(ApiService::class.java)
     }

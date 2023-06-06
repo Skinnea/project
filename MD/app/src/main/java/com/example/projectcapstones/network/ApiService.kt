@@ -1,11 +1,10 @@
 package com.example.projectcapstones.network
 
-import com.example.projectcapstones.BuildConfig.API_KEY_CHAT
 import com.example.projectcapstones.BuildConfig.API_KEY_NEWS
-import com.example.projectcapstones.response.ChatResponse
 import com.example.projectcapstones.response.NewsResponse
-import com.example.projectcapstones.data.ResultChat
-import retrofit2.Response
+import com.example.projectcapstones.response.FileUploadResponse
+import okhttp3.MultipartBody
+import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
@@ -15,9 +14,9 @@ interface ApiService {
         @Query("q") q: String
     ): NewsResponse
 
-    @Headers("Authorization: Bearer $API_KEY_CHAT")
-    @POST("completions")
-    suspend fun getChat(
-        @Body completionResponse: ResultChat
-    ): Response<ChatResponse>
+    @Multipart
+    @POST("predict")
+    fun uploadImage(
+        @Part file: MultipartBody.Part,
+    ): Call<FileUploadResponse>
 }

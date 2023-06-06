@@ -11,12 +11,17 @@ import com.example.projectcapstones.databinding.ItemListHistoryBinding
 import com.example.projectcapstones.ui.detail.DetailActivity
 import com.google.firebase.firestore.DocumentSnapshot
 
-class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
-
+class HistoryAdapter(private val context: Context) :
+    RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     internal val skinData: MutableList<DocumentSnapshot> = mutableListOf()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ItemListHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        ViewHolder(
+            ItemListHistoryBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val document = skinData[position]
@@ -25,7 +30,6 @@ class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<Histor
             document.getString("descSkin"),
             document.getString("imageUrl")
         )
-
         val imageUrl = document.getString("imageUrl")
         val nameSkin = document.getString("nameSkin")
         holder.itemView.setOnClickListener {
@@ -37,7 +41,6 @@ class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<Histor
     }
 
     override fun getItemCount(): Int = skinData.size
-
     fun historySkin(newskinData: List<DocumentSnapshot>) {
         val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun getOldListSize(): Int = skinData.size
@@ -56,12 +59,12 @@ class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<Histor
     inner class ViewHolder(private val binding: ItemListHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(name: String?, description: String?, imageUrl: String?) {
-            binding.nameSkin.text = name
-            binding.timestamp.text = description
+            binding.nama.text = name
+            binding.isi.text = description
             imageUrl?.let { url ->
                 Glide.with(binding.root)
                     .load(url)
-                    .into(binding.imgResult)
+                    .into(binding.img)
             }
         }
     }
