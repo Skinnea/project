@@ -11,15 +11,14 @@
 ![lv_0_20230603223144](https://github.com/Skinnea/project/assets/46983155/011897f5-6ceb-433d-b8f0-2fef1f3f54ea)
 
 ### Fitur extra :
-- Chat Bot Health
+- Chat Admin Langsung (Owner and Customer)
 - News Update Health
 - History Result Skin (need google auth)
 
 ### Resources :
 - API News > https://newsapi.org/s/indonesia-health-news-api
-- API Chat > https://platform.openai.com/docs/api-reference 
-(* tokennya abis :v, lagi gabisa dulu chat) 
 - Firebase FireStore > https://firebase.google.com/docs/firestore
+- own API Skinnea > https://skinnea-wbd7cvw5ia-et.a.run.app/docs
 
 ### Design
 - Canva
