@@ -6,90 +6,50 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
 
-    <LinearLayout
-        android:id="@+id/leftChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+    <ImageView
+        android:id="@+id/ivMessenger"
+        android:layout_width="38dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_baseline_account_circle_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:layout_width="38dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="8dp"
-            android:contentDescription="@string/ivMessenger_description"
-            android:src="@drawable/logo_team" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold"
-                android:text="@string/adminProfile" />
-
-            <TextView
-                android:id="@+id/tvMessageLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/rounded_message_navi"
-                android:maxWidth="250dp"
-                android:padding="8dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/rightChat"
+    <TextView
+        android:id="@+id/tvMessenger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tvMessengerRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:textStyle="bold"
-                android:layout_gravity="end"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                tools:text="FirstName LastName" />
-            <TextView
-                android:id="@+id/tvMessageRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_gravity="end"
-                android:background="@drawable/rounded_message_blue"
-                android:maxWidth="250dp"
-                android:padding="8dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+        android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        app:layout_constraintBottom_toTopOf="@id/tvMessage"
+        app:layout_constraintStart_toEndOf="@+id/ivMessenger"
+        app:layout_constraintTop_toTopOf="@+id/ivMessenger"
+        tools:text="FirstName LastName" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivMessengerRight"
-            android:layout_width="38dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="8dp"
-            android:layout_gravity="end"
-            android:contentDescription="@string/ivMessenger_description"
-            android:src="@drawable/ic_baseline_account_circle_24" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_message_blue"
+        android:maxWidth="250dp"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="@+id/tvMessenger"
+        app:layout_constraintTop_toBottomOf="@id/tvMessenger"
+        tools:text="This is a message" />
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="4dp"
+        android:maxLines="2"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMessage"
+        app:layout_constraintStart_toEndOf="@+id/tvMessage"
+        tools:text="Just Now" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
