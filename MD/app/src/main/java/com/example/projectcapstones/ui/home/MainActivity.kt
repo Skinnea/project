@@ -180,15 +180,7 @@ class MainActivity : AppCompatActivity() {
         binding.buttonCamera.setOnClickListener {
             val firebaseUser = auth.currentUser
             if (firebaseUser == null) {
-                AlertDialog.Builder(this@MainActivity).apply {
-                    setTitle("Maaf!")
-                    setMessage("Anda perlu login google terlebih dahulu")
-                    setPositiveButton("Oke") { _, _ ->
-                    }
-                    setCancelable(false)
-                    create()
-                    show()
-                }
+                alertDialogNeed()
             } else {
                 AlertDialog.Builder(this@MainActivity).apply {
                     setTitle("Info!")
@@ -205,15 +197,7 @@ class MainActivity : AppCompatActivity() {
         binding.buttonChat.setOnClickListener {
             val firebaseUser = auth.currentUser
             if (firebaseUser == null) {
-                AlertDialog.Builder(this@MainActivity).apply {
-                    setTitle("Maaf!")
-                    setMessage("Anda perlu login google terlebih dahulu")
-                    setPositiveButton("Oke") { _, _ ->
-                    }
-                    setCancelable(false)
-                    create()
-                    show()
-                }
+                alertDialogNeed()
             } else {
                 if (firebaseUser.uid == "L8LZLtSOMXNjUEizcwjqtqRCeVa2") {
                     startActivity(Intent(this, ListUserActivity::class.java))
@@ -228,15 +212,7 @@ class MainActivity : AppCompatActivity() {
         binding.menuCard.cardMenu2.setOnClickListener {
             val firebaseUser = auth.currentUser
             if (firebaseUser == null) {
-                AlertDialog.Builder(this@MainActivity).apply {
-                    setTitle("Maaf!")
-                    setMessage("Anda perlu login google terlebih dahulu")
-                    setPositiveButton("Oke") { _, _ ->
-                    }
-                    setCancelable(false)
-                    create()
-                    show()
-                }
+                alertDialogNeed()
             } else {
                 startActivity(Intent(this, HistoryActivity::class.java))
             }
@@ -248,6 +224,18 @@ class MainActivity : AppCompatActivity() {
             auth.signOut()
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+        }
+    }
+
+    private fun alertDialogNeed(){
+        AlertDialog.Builder(this@MainActivity).apply {
+            setTitle("Maaf!")
+            setMessage("Anda perlu login google terlebih dahulu")
+            setPositiveButton("Oke") { _, _ ->
+            }
+            setCancelable(false)
+            create()
+            show()
         }
     }
 
