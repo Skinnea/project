@@ -11,14 +11,14 @@
 ![lv_0_20230603223144](https://github.com/Skinnea/project/assets/46983155/011897f5-6ceb-433d-b8f0-2fef1f3f54ea)
 
 ### Fitur extra :
-- Chat Admin Langsung (need Auth Google)
-- News Update Health
+- Chat Admin Skinnea Langsung (need Auth Google)
+- News Update Health (Live top health headlines from Indonesia - News API)
 - History Result Skin (need Auth Google)
 
 ### Resources :
-- API News > https://newsapi.org/s/indonesia-health-news-api
-- Firebase FireStore > https://firebase.google.com/docs/firestore
-- own API Skinnea > https://skinnea-wbd7cvw5ia-et.a.run.app/docs
+- API News > https://newsapi.org/docs
+- Firebase FireStore > https://firebase.google.com/docs/
+- Own API Skinnea > https://skinnea-wbd7cvw5ia-et.a.run.app/docs
 
 ### Design
 Design OnBoard
