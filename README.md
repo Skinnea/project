@@ -1,4 +1,4 @@
-# **Capstone Project Bangkit 2023**
+<h1 align="center">Capstone Project Bangkit 2023</h1>
 
 <p align="center">
   <img src="image/logo-0.png" alt="skinnea logo" height="180" />
