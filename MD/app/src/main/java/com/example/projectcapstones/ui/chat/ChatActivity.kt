@@ -44,7 +44,7 @@ class ChatActivity : AppCompatActivity() {
             finish()
             return
         }
-        if (firebaseUser.uid == "VZQb2hCvPpbLgCAt3c8kMfYXrGN2") {
+        if (firebaseUser.uid == "L8LZLtSOMXNjUEizcwjqtqRCeVa2") {
             binding.adminProfile.root.visibility = View.GONE
             val layoutParams = binding.rvlistChat.layoutParams as RelativeLayout.LayoutParams
             layoutParams.addRule(RelativeLayout.BELOW, R.id.parent)
