@@ -16,7 +16,6 @@
   * User Authentication **(done)**
   * Camera & Gallery **(done)**
   * Detail Image Identification **(done)**
-  * Integrate Model TFLite **(done)**
   * Link User Flow : [User-Flow](https://drive.google.com/file/d/1FPWhRaUAVm0GY3NZloqabkvHZkex6ZpN/view?usp=share_link)
   * Link Figma Prototipe: [Prototipe](https://www.figma.com/proto/EnUkq1tXmxfazQ7Uikmft5/Project-Capstone?type=design&node-id=35-117&scaling=scale-down&page-id=0%3A1&starting-point-node-id=35%3A117)
   * Link Figma Hi-Fi : [Hi-Fi](https://www.figma.com/file/EnUkq1tXmxfazQ7Uikmft5/Project-Capstone?type=design&node-id=0%3A1&t=jEphhzbAV2ql0IG2-1)
