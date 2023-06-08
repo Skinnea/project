@@ -243,12 +243,12 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun sendHistory(file: File) {
+        binding.progressBar.visibility = View.VISIBLE
         val storageRef = FirebaseStorage.getInstance().reference
         val imageRef = storageRef.child("Skinnea/${file.name}")
         val upload= imageRef.putFile(file.toUri())
         val firestore = FirebaseFirestore.getInstance()
         upload.addOnSuccessListener {
-            binding.progressBar.visibility = View.VISIBLE
             imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                 imageUrl = downloadUri.toString()
                 val auth = FirebaseAuth.getInstance()
@@ -271,12 +271,13 @@ class CameraActivity : AppCompatActivity() {
                         .document()
                         .set(user)
                         .addOnSuccessListener {
+                            binding.progressBar.visibility = View.GONE
                             playAnimation()
                         }
                         .addOnFailureListener {
+                            binding.progressBar.visibility = View.GONE
                             alertErrorConnect()
                         }
-                    binding.progressBar.visibility = View.GONE
                 }
             }
         }
