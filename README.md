@@ -1,4 +1,12 @@
-# **Skinnea - Capstone Project Bangkit 2023**
+# **Capstone Project Bangkit 2023**
+
+<p align="center">
+  <img src="image/logo-1.png" alt="skinnea logo" height="180" />
+</p>
+
+<h1 align="center">Tanamin Web Service</h1>
+
+<div align="center">
 
 ## **Task List**
 **1. Machine Learning**
