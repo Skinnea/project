@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="image/cc-1.png:>
+  <img src="image/cc01.png">
 </p>
 <p align="center">
-  <img src="image/cc-2.png">
+  <img src="image/cc02.png">
 </p>
 <p align="center">
-  <img src="image/cc-3.png">
+  <img src="image/cc03.png">
 </p>
