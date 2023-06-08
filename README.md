@@ -31,14 +31,15 @@
   
   
   
-### **Abstract**
+<h1 align="center">Abstract</h1>
+
 <div align="center">
 The skin is the first organ to be exposed to external stimuli, including temperature, touch, and other stimuli, so that skin disease is the most common type of disease and spreads quickly in humans. Accurate identification of skin diseases is very important in the treatment of skin diseases. However, sometimes doctors have difficulty identifying the right type of skin disease because several types of skin disease have similar symptoms or almost the same color and texture. To assist doctors in identifying the types of skin diseases, we try to make a study to identify the types of skin diseases using an image data processing system.
 
 In this research, we try to build a machine learning model that can recognize types of skin diseases based on uploaded images. Models can use the CNN architecture to identify or classify them. We use Google Cloud as a Cloud service provider. The cloud will implement machine learning models, execute multiple queries, and provide consumable API  for data capture on mobile platforms. We also create a prototype or application as an interface between the user and machine learning models such as cameras, pages, functions using the Kotlin language. The test was carried out using the Dermnet dataset that we obtained from the Kaggle website.
-</div>
 
-### **Skinnea Team**
+
+<h1 align="center">Skinnea Team</h1>
 
 |              Name              | Bangkit-ID  |   Learning Path    |                             Contact Link                                  |
 | :----------------------------: | :--------:  | :----------------: | :----------------------------------------------------------------------:  |
@@ -48,3 +49,4 @@ In this research, we try to build a machine learning model that can recognize ty
 |       Pandu Prastiyo Aji       | A084DKX4507 | Mobile Development |                 [LinkedIn](https://www.linkedin.com/in/)                  |
 |         Aldi Febriyanto        | C172DSX2899 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/)                  |
 |    Muhammad Faiz Abrar Fatah   | C172DSX2236 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/muhfaiz)           |
+</div>
