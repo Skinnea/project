@@ -178,15 +178,28 @@ class MainActivity : AppCompatActivity() {
             isButtonClicked = newButtonClicked
         }
         binding.buttonCamera.setOnClickListener {
-            AlertDialog.Builder(this@MainActivity).apply {
-                setTitle("Info!")
-                setMessage("Mohon pastikan koneksi internetmu telah aktif")
-                setPositiveButton("Oke") { _, _ ->
-                    startActivity(Intent(this@MainActivity, CameraActivity::class.java))
+            val firebaseUser = auth.currentUser
+            if (firebaseUser == null) {
+                AlertDialog.Builder(this@MainActivity).apply {
+                    setTitle("Maaf!")
+                    setMessage("Anda perlu login google terlebih dahulu")
+                    setPositiveButton("Oke") { _, _ ->
+                    }
+                    setCancelable(false)
+                    create()
+                    show()
                 }
-                setCancelable(false)
-                create()
-                show()
+            } else {
+                AlertDialog.Builder(this@MainActivity).apply {
+                    setTitle("Info!")
+                    setMessage("Mohon pastikan koneksi internetmu telah aktif")
+                    setPositiveButton("Oke") { _, _ ->
+                        startActivity(Intent(this@MainActivity, CameraActivity::class.java))
+                    }
+                    setCancelable(false)
+                    create()
+                    show()
+                }
             }
         }
         binding.buttonChat.setOnClickListener {
@@ -202,7 +215,7 @@ class MainActivity : AppCompatActivity() {
                     show()
                 }
             } else {
-                if (firebaseUser.uid == "VZQb2hCvPpbLgCAt3c8kMfYXrGN2") {
+                if (firebaseUser.uid == "L8LZLtSOMXNjUEizcwjqtqRCeVa2") {
                     startActivity(Intent(this, ListUserActivity::class.java))
                 } else {
                     startActivity(Intent(this, ChatActivity::class.java))
