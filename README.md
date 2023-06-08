@@ -53,6 +53,6 @@ In this research, we try to build a machine learning model that can recognize ty
 |   Muhammad Zidan Hendriyadi    | M182DSX0465 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/)                  |
 |       Nahla Tarisafitri        | M268DSY2500 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/)                  |
 |       Pandu Prastiyo Aji       | A084DKX4507 | Mobile Development |                 [LinkedIn](https://www.linkedin.com/in/)                  |
-|         Aldi Febriyanto        | C172DSX2899 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/)                  |
+|         Aldi Febriyanto        | C172DSX2899 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/aldi-febriyanto)   |
 |    Muhammad Faiz Abrar Fatah   | C172DSX2236 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/muhfaiz)           |
 </div>
