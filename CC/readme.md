@@ -3,7 +3,7 @@
   
 |              Name              | Bangkit-ID  |   Learning Path    |                             Contact Link                                  |
 | :----------------------------: | :--------:  | :----------------: | :----------------------------------------------------------------------:  |
-|         Aldi Febriyanto        | C172DSX2899 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/)                  |
+|         Aldi Febriyanto        | C172DSX2899 |  Cloud Computing   |         [LinkedIn](https://www.linkedin.com/in/aldi-febriyanto)           |
 |    Muhammad Faiz Abrar Fatah   | C172DSX2236 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/muhfaiz)           |
   
  ## Cloud Computing Member
