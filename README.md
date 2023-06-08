@@ -5,12 +5,12 @@
   * Datasets **(done)** 
   * Pre-processing **(done)**
   * Training and validation **(done)**
-  * Testing **(not yet)**
+  * Testing **(done)**
 
 **2. Cloud Computing**
   * Build an backend API **(done)**
   * Deploy **(done)**
-  * CC Documentation : [CC](https://github.com/Skinnea/project/tree/main/CC)
+  * CC Documentation : [Here](https://github.com/Skinnea/project/tree/main/CC)
 
 **3. Mobile Development**
   * User Authentication **(done)**
