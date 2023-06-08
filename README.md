@@ -6,6 +6,11 @@
 
 <h1 align="center">Skinnea</h1>
 
+<h2 align="left">Hi There👋, We are from the C23-PSO25 Product-based Capstone Project Bangkit 2023.</h2>
+<p align="left">Here we are developing the "Skinnea" application for the prediction of skin diseases. We use machine learning for predictions, we also build Android apps, and we build APIs for integrating machine learning models into Android.</p>
+
+<p align="left">
+</p>
 
 
 ## **Task List**
