@@ -54,10 +54,10 @@ In this research, we try to build a machine learning model that can recognize ty
 
 |              Name              | Bangkit-ID  |   Learning Path    |                             Contact Link                                  |
 | :----------------------------: | :--------:  | :----------------: | :----------------------------------------------------------------------:  |
-|        Dzikri Faizziyan        | M296DKX4057 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/)                  |
-|   Muhammad Zidan Hendriyadi    | M182DSX0465 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/)                  |
-|       Nahla Tarisafitri        | M268DSY2500 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/)                  |
-|       Pandu Prastiyo Aji       | A084DKX4507 | Mobile Development |                 [LinkedIn](https://www.linkedin.com/in/)                  |
+|        Dzikri Faizziyan        | M296DKX4057 |  Machine Learning  |                 [LinkedIn](https://www.linkedin.com/in/nahlatafi)         |
+|   Muhammad Zidan Hendriyadi    | M182DSX0465 |  Machine Learning  |[LinkedIn](https://www.linkedin.com/in/muhammad-zidan-hendriyadi-3a248b234)|
+|       Nahla Tarisafitri        | M268DSY2500 |  Machine Learning  |[LinkedIn](https://www.linkedin.com/in/dzikri-faizziyan-9b4796202)         |
+|       Pandu Prastiyo Aji       | A084DKX4507 | Mobile Development |[LinkedIn](https://www.linkedin.com/in/pandu-prastiyo-aji-3082491b0)       |
 |         Aldi Febriyanto        | C172DSX2899 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/aldi-febriyanto)   |
 |    Muhammad Faiz Abrar Fatah   | C172DSX2236 |  Cloud Computing   |                 [LinkedIn](https://www.linkedin.com/in/muhfaiz)           |
 </div>
