@@ -248,6 +248,7 @@ class CameraActivity : AppCompatActivity() {
         val upload= imageRef.putFile(file.toUri())
         val firestore = FirebaseFirestore.getInstance()
         upload.addOnSuccessListener {
+            binding.progressBar.visibility = View.VISIBLE
             imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                 imageUrl = downloadUri.toString()
                 val auth = FirebaseAuth.getInstance()
@@ -275,11 +276,12 @@ class CameraActivity : AppCompatActivity() {
                         .addOnFailureListener {
                             alertErrorConnect()
                         }
-
+                    binding.progressBar.visibility = View.GONE
                 }
             }
         }
     }
+    
     fun alertErrorConnect() {
         AlertDialog.Builder(this@CameraActivity).apply {
             setTitle("Maaf")
