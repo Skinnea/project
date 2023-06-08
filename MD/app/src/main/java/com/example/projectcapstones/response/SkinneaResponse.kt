@@ -14,7 +14,7 @@ data class SkinneaResponse(
 	val detailObat: String? = null,
 
 	@field:SerializedName("accuracy")
-	val accuracy: Any? = null,
+	val accuracy: String? = null,
 
 	@field:SerializedName("deskripsi")
 	val deskripsi: String? = null,

@@ -50,6 +50,7 @@ class CameraActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.progressBar.visibility = View.GONE
         setupButton()
         setupView()
     }
@@ -218,7 +219,7 @@ class CameraActivity : AppCompatActivity() {
                         if (responseBody != null) {
                             binding.progressBar.visibility = View.GONE
                             result = responseBody.result
-                            accuracy = responseBody.accuracy.toString()
+                            accuracy = responseBody.accuracy
                             deskripsi = responseBody.deskripsi
                             imgObat = responseBody.imgObat
                             namaObat = responseBody.namaObat
@@ -282,7 +283,6 @@ class CameraActivity : AppCompatActivity() {
             }
         }
     }
-    
     fun alertErrorConnect() {
         AlertDialog.Builder(this@CameraActivity).apply {
             setTitle("Maaf")
