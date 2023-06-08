@@ -1,10 +1,10 @@
 # **Capstone Project Bangkit 2023**
 
 <p align="center">
-  <img src="image/logo-1.png" alt="skinnea logo" height="180" />
+  <img src="image/logo-0.png" alt="skinnea logo" height="180" />
 </p>
 
-<h1 align="center">Tanamin Web Service</h1>
+<h1 align="center">Skinnea</h1>
 
 
 
