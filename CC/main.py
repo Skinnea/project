@@ -37,7 +37,7 @@ def predict(img):
 
     result = {
         "result": Labels[class_idx],
-        "accuracy": float(probabilities[class_idx])
+        "accuracy": f"{float(probabilities[class_idx])*100:.2f}%"
     }
 
     if Labels[class_idx] == "Atopic-Dermatitis":
