@@ -84,7 +84,7 @@ class ChatActivity : AppCompatActivity() {
                 } else {
                     val user = hashMapOf(
                         "uid" to firebaseUser.uid,
-                        "pesan" to binding.messageEditText.text.toString(),
+                        "email" to firebaseUser.email,
                         "nama" to firebaseUser.displayName.toString(),
                         "poto" to firebaseUser.photoUrl.toString(),
                         "waktu" to Date().time
