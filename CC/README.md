@@ -18,6 +18,9 @@
 <h1 align="center">Cloud Computing Section</h1>
 </div>
 <p align="center">
+  <img src="image/CC.drawio.png">
+</p>
+<p align="center">
   <img src="image/cc01.png">
 </p>
 <p align="center">
