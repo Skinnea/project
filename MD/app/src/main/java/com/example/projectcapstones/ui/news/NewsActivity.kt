@@ -55,9 +55,11 @@ class NewsActivity : AppCompatActivity() {
                 when (result) {
                     is ResultNews.Loading -> {
                         binding.progressBar.visibility = View.VISIBLE
+                            binding.progressText.visibility = View.VISIBLE
                     }
                     is ResultNews.Success -> {
                         binding.progressBar.visibility = View.GONE
+                            binding.progressText.visibility = View.GONE
                         binding.rvList.visibility = View.VISIBLE
                         val newsData = result.data
                         newsAdapter.submitList(newsData)
@@ -71,6 +73,7 @@ class NewsActivity : AppCompatActivity() {
                     }
                     is ResultNews.Error -> {
                         binding.progressBar.visibility = View.GONE
+                            binding.progressText.visibility = View.GONE
                         binding.rvList.visibility = View.GONE
                         binding.viewError.root.visibility = View.VISIBLE
                         binding.viewError.tvError.text = getString(R.string.error)

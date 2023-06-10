@@ -9,7 +9,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 class ListUserViewModel : ViewModel() {
     private val _listUser = MutableLiveData<List<DocumentSnapshot>>()
     val listUser: LiveData<List<DocumentSnapshot>> = _listUser
-    private val db = FirebaseFirestore.getInstance()
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
     private val _isError = MutableLiveData<Boolean>()
@@ -21,7 +20,7 @@ class ListUserViewModel : ViewModel() {
         _isLoading.value = true
         _isError.value = false
         _isNotFound.value = false
-        db.collection("CHAT")
+        FirebaseFirestore.getInstance().collection("CHAT")
             .get()
             .addOnSuccessListener { chat ->
                 _isLoading.value = false

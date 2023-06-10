@@ -32,6 +32,7 @@ class ListUserActivity : AppCompatActivity() {
         }
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.progressText.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.rvListUser.visibility = if (isLoading) View.GONE else View.VISIBLE
         }
         viewModel.isError.observe(this) { isError ->
