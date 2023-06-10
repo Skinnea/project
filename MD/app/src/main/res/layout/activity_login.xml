@@ -32,6 +32,7 @@
         app:srcCompat="@drawable/welcome"
         android:contentDescription="@string/logowelcome_description" />
 
+   
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -54,7 +55,7 @@
         android:text="@string/login"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewWelcome" />
+        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal" />
 
     <Button
         android:id="@+id/guestButton"

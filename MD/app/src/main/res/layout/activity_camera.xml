@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toTopOf="@+id/card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchCamera" />
+        app:layout_constraintTop_toBottomOf="@+id/switchCamera"/>
 
     <TextView
         android:id="@+id/progressText"
