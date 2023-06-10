@@ -25,7 +25,6 @@ import com.example.projectcapstones.configcamera.createFile
 import com.example.projectcapstones.configcamera.reduceFileImage
 import com.example.projectcapstones.configcamera.rotateFile
 import com.example.projectcapstones.configcamera.uriToFile
-import com.example.projectcapstones.data.ResultSkin
 import com.example.projectcapstones.databinding.ActivityCameraBinding
 import com.example.projectcapstones.network.ApiConfig
 import com.example.projectcapstones.response.SkinneaResponse
@@ -45,21 +44,13 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-    private var result: String? = null
-    private var accuracy: String? = null
-    private var deskripsi: String? = null
-    private var imgObat: String? = null
-    private var namaObat: String? = null
-    private var pemakaianObat: String? = null
-    private var detailObat: String? = null
-    private var imageUrl: String? = null
+    private var getFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.progressBar.visibility = View.GONE
-        binding.progressText.visibility = View.GONE
         setupButton()
         setupView()
     }
@@ -111,10 +102,7 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     output.savedUri?.let { uri ->
                         val file = File(uri.path.toString())
-                        val rotateImage = rotateFile(
-                            BitmapFactory.decodeFile(file.path),
-                            cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
-                        )
+                        val rotateImage = rotateFile(BitmapFactory.decodeFile(file.path), cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
                         getFile = file
                         binding.previewImage.previewImageView.setImageBitmap(rotateImage)
                         uploadImage()
@@ -138,18 +126,8 @@ class CameraActivity : AppCompatActivity() {
             startCamera()
         }
         binding.previewImage.uploadButton.setOnClickListener {
-            val results = ResultSkin(
-                result,
-                accuracy,
-                deskripsi,
-                imgObat,
-                namaObat,
-                pemakaianObat,
-                detailObat,
-                imageUrl
-            )
-            val intent = Intent(this@CameraActivity, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.EXTRA_RESULT_SKIN, results)
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("imageResult", imageUrl)
             startActivity(intent)
         }
     }
@@ -177,23 +155,19 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun playAnimation() {
-        binding.progressBar.visibility = View.GONE
-        binding.progressText.visibility = View.GONE
         val previewImg =
             ObjectAnimator.ofFloat(binding.previewImage.root, View.ALPHA, 1f).setDuration(50)
         AnimatorSet().apply {
             playSequentially(previewImg)
             startDelay = 50
         }
-            .start()
+        .start()
         binding.galleryImage.isClickable = false
         binding.captureImage.isClickable = false
         binding.switchCamera.isClickable = false
     }
 
     private fun playAnimationRestart() {
-        binding.progressBar.visibility = View.GONE
-        binding.progressText.visibility = View.GONE
         val previewImg =
             ObjectAnimator.ofFloat(binding.previewImage.root, View.ALPHA, 0f).setDuration(50)
         AnimatorSet().apply {
@@ -235,7 +209,6 @@ class CameraActivity : AppCompatActivity() {
             val apiService = ApiConfig.getApiSkinnea()
             val uploadImageRequest = apiService.uploadImage(imageMultipart)
             binding.progressBar.visibility = View.VISIBLE
-            binding.progressText.visibility = View.VISIBLE
             uploadImageRequest.enqueue(object : Callback<SkinneaResponse> {
                 override fun onResponse(
                     call: Call<SkinneaResponse>,
@@ -245,7 +218,6 @@ class CameraActivity : AppCompatActivity() {
                         val responseBody = response.body()
                         if (responseBody != null) {
                             binding.progressBar.visibility = View.GONE
-                            binding.progressText.visibility = View.GONE
                             result = responseBody.result
                             accuracy = responseBody.accuracy
                             deskripsi = responseBody.deskripsi
@@ -255,11 +227,9 @@ class CameraActivity : AppCompatActivity() {
                             detailObat = responseBody.detailObat
                             binding.previewImage.result.text = result
                             binding.previewImage.accurate.text = accuracy
-                            playAnimation()
                             sendHistory(file)
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            binding.progressText.visibility = View.GONE
                             alertErrorFailed()
                         }
                     }
@@ -267,7 +237,6 @@ class CameraActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<SkinneaResponse>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    binding.progressText.visibility = View.GONE
                     alertErrorConnect()
                 }
             })
@@ -275,16 +244,18 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun sendHistory(file: File) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        if (userId != null) {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.progressText.visibility = View.VISIBLE
-            val imageRef = FirebaseStorage.getInstance().reference.child("Skinnea/${file.name}")
-            val upload = imageRef.putFile(file.toUri())
-            val firestore = FirebaseFirestore.getInstance()
-            upload.addOnSuccessListener {
-                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    imageUrl = downloadUri.toString()
+        binding.progressBar.visibility = View.VISIBLE
+        val storageRef = FirebaseStorage.getInstance().reference
+        val imageRef = storageRef.child("Skinnea/${file.name}")
+        val upload= imageRef.putFile(file.toUri())
+        val firestore = FirebaseFirestore.getInstance()
+        upload.addOnSuccessListener {
+            imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                imageUrl = downloadUri.toString()
+                val auth = FirebaseAuth.getInstance()
+                val currentUser = auth.currentUser
+                val userId = currentUser?.uid
+                if (userId != null) {
                     val user = hashMapOf(
                         "imageUrl" to imageUrl,
                         "result" to result,
@@ -302,19 +273,16 @@ class CameraActivity : AppCompatActivity() {
                         .set(user)
                         .addOnSuccessListener {
                             binding.progressBar.visibility = View.GONE
-                            binding.progressText.visibility = View.GONE
                             playAnimation()
                         }
                         .addOnFailureListener {
                             binding.progressBar.visibility = View.GONE
-                            binding.progressText.visibility = View.GONE
                             alertErrorConnect()
                         }
                 }
             }
         }
     }
-
     fun alertErrorConnect() {
         AlertDialog.Builder(this@CameraActivity).apply {
             setTitle("Maaf")
@@ -340,6 +308,13 @@ class CameraActivity : AppCompatActivity() {
     }
 
     companion object {
-        var getFile: File? = null
+        var result: String? = null
+        var accuracy: String? = null
+        var deskripsi: String? = null
+        var imgObat: String? = null
+        var namaObat: String? = null
+        var pemakaianObat: String? = null
+        var detailObat: String? = null
+        var imageUrl: String? = null
     }
 }

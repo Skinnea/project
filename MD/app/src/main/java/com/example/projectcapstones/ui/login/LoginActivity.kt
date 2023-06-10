@@ -12,9 +12,9 @@ import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.example.projectcapstones.ui.home.MainActivity
 import com.example.projectcapstones.R
 import com.example.projectcapstones.databinding.ActivityLoginBinding
+import com.example.projectcapstones.ui.home.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

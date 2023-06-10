@@ -1,6 +1,5 @@
 package com.example.projectcapstones.ui.detail
 
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,9 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.projectcapstones.R
-import com.example.projectcapstones.data.ResultSkin
 import com.example.projectcapstones.databinding.ActivityDetailBinding
-import com.example.projectcapstones.ui.upload.CameraActivity.Companion.getFile
 
 @Suppress("DEPRECATION")
 class DetailActivity : AppCompatActivity() {
@@ -30,8 +27,6 @@ class DetailActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(getImgUrl)
                 .into(binding.imgResult)
-        } else {
-            guest()
         }
         setupView()
     }
@@ -86,26 +81,5 @@ class DetailActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-    }
-
-    private fun guest(){
-        val intent = intent
-        if (intent.hasExtra(EXTRA_RESULT_SKIN)) {
-            binding.detailCard.visibility = View.VISIBLE
-            val results = intent.getParcelableExtra<ResultSkin>(EXTRA_RESULT_SKIN)
-            binding.resultSkin.text = results?.result
-            binding.descSkin.resultDescSkin.text = results?.deskripsi
-            binding.nameMedic.nameMedic.text = results?.namaObat
-            binding.nameMedic.suggestMedic.text = results?.pemakaianObat
-            Glide.with(this)
-                .load(results?.imgObat)
-                .into(binding.imgMedic)
-            binding.descMedic.descMedic.text = results?.detailObat
-            binding.imgResult.setImageBitmap(BitmapFactory.decodeFile(getFile?.path))
-        }
-    }
-
-    companion object {
-        const val EXTRA_RESULT_SKIN = "extra_result_skin"
     }
 }

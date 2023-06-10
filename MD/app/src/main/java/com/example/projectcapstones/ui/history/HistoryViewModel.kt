@@ -7,6 +7,9 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HistoryViewModel : ViewModel() {
+    private val db = FirebaseFirestore.getInstance()
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid
+
     private val _historyList = MutableLiveData<List<DocumentSnapshot>>()
     val historyList: LiveData<List<DocumentSnapshot>> = _historyList
     private val _isLoading = MutableLiveData<Boolean>()
@@ -20,8 +23,9 @@ class HistoryViewModel : ViewModel() {
         _isLoading.value = true
         _isError.value = false
         _isNotFound.value = false
-        FirebaseFirestore.getInstance().collection("users")
-            .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
+
+        db.collection("users")
+            .document(uid.toString())
             .collection("historyMedic")
             .get()
             .addOnSuccessListener { history ->

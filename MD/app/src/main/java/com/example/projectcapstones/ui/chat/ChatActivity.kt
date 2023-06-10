@@ -17,8 +17,10 @@ import com.example.projectcapstones.databinding.ActivityChatBinding
 import com.example.projectcapstones.message.Message
 import com.example.projectcapstones.ui.login.LoginActivity
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -26,6 +28,8 @@ import java.util.*
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
     private lateinit var adapter: ChatAdapter
     private lateinit var userMessagesRef: DatabaseReference
 
@@ -33,7 +37,8 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val firebaseUser = Firebase.auth.currentUser
+        auth = Firebase.auth
+        val firebaseUser = auth.currentUser
         if (firebaseUser == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
@@ -56,12 +61,14 @@ class ChatActivity : AppCompatActivity() {
                 startActivity(dialPhoneIntent)
             }
         }
+        db = Firebase.database
         val getUid = intent.getStringExtra("uid")
+        val messagesRef = db.reference.child(MESSAGES_CHILD)
         val uid = firebaseUser.uid
         userMessagesRef = if (getUid != null) {
-            Firebase.database.reference.child(MESSAGES_CHILD).child(getUid)
+            messagesRef.child(getUid)
         } else {
-            Firebase.database.reference.child(MESSAGES_CHILD).child(uid)
+            messagesRef.child(uid)
         }
         setupView()
         binding.sendButton.setOnClickListener {
@@ -77,7 +84,7 @@ class ChatActivity : AppCompatActivity() {
                 } else {
                     val user = hashMapOf(
                         "uid" to firebaseUser.uid,
-                        "pesan" to binding.messageEditText.text.toString(),
+                        "email" to firebaseUser.email,
                         "nama" to firebaseUser.displayName.toString(),
                         "poto" to firebaseUser.photoUrl.toString(),
                         "waktu" to Date().time

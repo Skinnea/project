@@ -104,8 +104,7 @@ class MainActivity : AppCompatActivity() {
                 Glide.with(this)
                     .load(it.photoUrl)
                     .into(binding.itemProfile.imgProfile)
-                binding.menuCard.greetingText.text =
-                    getString(R.string.welcome, it.displayName?.substringBefore(" "))
+                binding.menuCard.greetingText.text = getString(R.string.welcome, it.displayName?.substringBefore(" "))
             }
         }
         viewModel.getProfile()
@@ -179,15 +178,20 @@ class MainActivity : AppCompatActivity() {
             isButtonClicked = newButtonClicked
         }
         binding.buttonCamera.setOnClickListener {
-            AlertDialog.Builder(this@MainActivity).apply {
-                setTitle("Info!")
-                setMessage("Mohon pastikan koneksi internetmu telah aktif")
-                setPositiveButton("Oke") { _, _ ->
-                    startActivity(Intent(this@MainActivity, CameraActivity::class.java))
+            val firebaseUser = auth.currentUser
+            if (firebaseUser == null) {
+                alertDialogNeed()
+            } else {
+                AlertDialog.Builder(this@MainActivity).apply {
+                    setTitle("Info!")
+                    setMessage("Mohon pastikan koneksi internetmu telah aktif")
+                    setPositiveButton("Oke") { _, _ ->
+                        startActivity(Intent(this@MainActivity, CameraActivity::class.java))
+                    }
+                    setCancelable(false)
+                    create()
+                    show()
                 }
-                setCancelable(false)
-                create()
-                show()
             }
         }
         binding.buttonChat.setOnClickListener {
@@ -223,7 +227,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun alertDialogNeed() {
+    private fun alertDialogNeed(){
         AlertDialog.Builder(this@MainActivity).apply {
             setTitle("Maaf!")
             setMessage("Anda perlu login google terlebih dahulu")
