@@ -14,7 +14,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 
 class HistoryAdapter(private val context: Context) :
     RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
-    internal val skinData: MutableList<DocumentSnapshot> = mutableListOf()
+    private val skinData: MutableList<DocumentSnapshot> = mutableListOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
             ItemListHistoryBinding.inflate(
@@ -41,18 +42,20 @@ class HistoryAdapter(private val context: Context) :
     }
 
     override fun getItemCount(): Int = skinData.size
+
     fun historySkin(newskinData: List<DocumentSnapshot>) {
+        val sortedData = newskinData.sortedByDescending { it.getLong("timestamp") }
         val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun getOldListSize(): Int = skinData.size
-            override fun getNewListSize(): Int = newskinData.size
+            override fun getNewListSize(): Int = sortedData.size
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                oldItemPosition == newItemPosition
+                skinData[oldItemPosition].id == sortedData[newItemPosition].id
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                skinData[oldItemPosition] == newskinData[newItemPosition]
+                skinData[oldItemPosition] == sortedData[newItemPosition]
         })
         skinData.clear()
-        skinData.addAll(newskinData)
+        skinData.addAll(sortedData)
         diffResult.dispatchUpdatesTo(this)
     }
 
