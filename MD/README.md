@@ -2,7 +2,6 @@
 ## ProjectCapstone.C23-PS025
 
 ### Fitur extra :
-- Chat Admin Skinnea Langsung (need Auth Google)
 - News Update Health (Live top health headlines from Indonesia - News API)
 - History Result Skin (need Auth Google)
 
