@@ -42,15 +42,12 @@ The skin is the first organ to be exposed to external stimuli, including tempera
 In this research, we try to build a machine learning model that can recognize types of skin diseases based on uploaded images. Models can use the CNN architecture to identify or classify them. We use Google Cloud as a Cloud service provider. The cloud will implement machine learning models, execute multiple queries, and provide consumable API  for data capture on mobile platforms. We also create a prototype or application as an interface between the user and machine learning models such as cameras, pages, functions using the Kotlin language. The test was carried out using the Dermnet dataset that we obtained from the Kaggle website.
 
 ## 
-![1686273583914](https://github.com/Skinnea/project/assets/46983155/5c74dba6-ffad-4e5a-96c6-90878ba77dc4)
-![1686273583879](https://github.com/Skinnea/project/assets/46983155/d6bfa2cf-5b46-4526-966e-b63f0fb2c576)
-![1686273625686](https://github.com/Skinnea/project/assets/46983155/08700e03-454a-4e83-94d6-acd961fa7969)
-![1686273625676](https://github.com/Skinnea/project/assets/46983155/58480a90-5a8d-4099-9907-ce03b4d442c2)
-
- ![1686273607415](https://github.com/Skinnea/project/assets/46983155/f09886a3-d145-49cc-8e5d-e048acb68344)
-![1686273607410](https://github.com/Skinnea/project/assets/46983155/0ef2da9b-3968-4f29-a23d-e0b441dc8055)
-![1686273607404](https://github.com/Skinnea/project/assets/46983155/46590d73-fd91-4a09-9487-4935f1fe3efd)
-![1686273625701](https://github.com/Skinnea/project/assets/46983155/d489b2ba-c2a0-4932-b7c9-1e9cc2782bf4)
+![1686478193961](https://github.com/Skinnea/project/assets/46983155/c050dcc8-b48b-4077-8678-558848d7d9ae)
+![1686478193952](https://github.com/Skinnea/project/assets/46983155/52761462-0890-4c0a-9091-cefed2406908)
+  
+![1686478193936](https://github.com/Skinnea/project/assets/46983155/8aa4e6a8-dad9-4635-a987-c6138239d4e3)
+![1686478193928](https://github.com/Skinnea/project/assets/46983155/0601cef1-591e-4e03-99d7-599aeafd4c87)
+![1686478193944](https://github.com/Skinnea/project/assets/46983155/469c2da2-a85c-411f-b56c-98f66badda87)
 
 <h1 align="center">Skinnea Team</h1>
 
