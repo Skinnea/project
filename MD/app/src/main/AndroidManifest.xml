@@ -48,9 +48,6 @@
             android:name=".ui.news.NewsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.chat.ChatActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.upload.CameraActivity"
             android:exported="false"
             android:screenOrientation="portrait"
