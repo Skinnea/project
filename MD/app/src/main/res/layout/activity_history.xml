@@ -13,7 +13,7 @@
         android:layout_height="64dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.24"
+        app:layout_constraintGuide_percent="0.27"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -31,7 +31,7 @@
         android:layout_height="64dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.68"
+        app:layout_constraintGuide_percent="0.78"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -57,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/copyrightTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal"/>
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal2" />
 
     <TextView
         android:id="@+id/progressText"
