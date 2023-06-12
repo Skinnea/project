@@ -97,9 +97,9 @@ class LoginActivity : AppCompatActivity() {
                 val account: GoogleSignInAccount = task.getResult(ApiException::class.java)!!
                 firebaseAuthWithGoogle(account.idToken!!)
                 AlertDialog.Builder(this@LoginActivity).apply {
-                    setTitle("Maaf")
+                    setTitle("Yeayy!!")
                     setMessage("Login sukses")
-                    setPositiveButton("Oke") { _, _ ->
+                    setPositiveButton("Lanjut") { _, _ ->
                     }
                     setCancelable(false)
                     create()
