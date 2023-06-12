@@ -53,6 +53,8 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = Firebase.auth
         binding.signInButton.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.progressText.visibility = View.VISIBLE
             if (binding.terms.check.isChecked) {
                 signIn()
             } else {
@@ -73,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
         binding.terms.againButton.setOnClickListener {
             termAnimationClose()
             binding.terms.check.isChecked = false
-            binding.terms.check.isChecked = false
+            myButton.isEnabled = false
         }
         setupView()
         playAnimation()
@@ -87,15 +89,13 @@ class LoginActivity : AppCompatActivity() {
     private var resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        binding.progressBar.visibility = View.VISIBLE
-        binding.progressText.visibility = View.VISIBLE
         if (result.resultCode == Activity.RESULT_OK) {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
-                binding.progressBar.visibility = View.GONE
-                binding.progressText.visibility = View.GONE
                 val account: GoogleSignInAccount = task.getResult(ApiException::class.java)!!
                 firebaseAuthWithGoogle(account.idToken!!)
+                binding.progressBar.visibility = View.GONE
+                binding.progressText.visibility = View.GONE
                 AlertDialog.Builder(this@LoginActivity).apply {
                     setTitle("Yeayy!!")
                     setMessage("Login sukses")
@@ -106,8 +106,6 @@ class LoginActivity : AppCompatActivity() {
                     show()
                 }
             } catch (_: ApiException) {
-                binding.progressBar.visibility = View.GONE
-                binding.progressText.visibility = View.GONE
                 AlertDialog.Builder(this@LoginActivity).apply {
                     setTitle("Maaf")
                     setMessage("Login gagal :(")
@@ -148,6 +146,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun termAnimation(){
+        binding.progressBar.visibility = View.GONE
+        binding.progressText.visibility = View.GONE
         binding.signInButton.isEnabled = false
         binding.guestButton.isEnabled = false
         val term = ObjectAnimator.ofFloat(binding.terms.root, View.ALPHA, 1f).setDuration(50)
@@ -158,6 +158,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun termAnimationClose(){
+        binding.progressBar.visibility = View.GONE
+        binding.progressText.visibility = View.GONE
         binding.signInButton.isEnabled = true
         binding.guestButton.isEnabled = true
         val term = ObjectAnimator.ofFloat(binding.terms.root, View.ALPHA, 0f).setDuration(50)
@@ -169,7 +171,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun playAnimation() {
         ObjectAnimator.ofFloat(binding.imageViewWelcome, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 3000
+            duration = 2000
             startDelay = 300
             repeatCount = ObjectAnimator.INFINITE
             repeatMode = ObjectAnimator.REVERSE
