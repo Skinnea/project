@@ -42,7 +42,7 @@ The skin is the first organ to be exposed to external stimuli, including tempera
 In this research, we try to build a machine learning model that can recognize types of skin diseases based on uploaded images. Models can use the CNN architecture to identify or classify them. We use Google Cloud as a Cloud service provider. The cloud will implement machine learning models, execute multiple queries, and provide consumable API  for data capture on mobile platforms. We also create a prototype or application as an interface between the user and machine learning models such as cameras, pages, functions using the Kotlin language. The test was carried out using the Dermnet dataset that we obtained from the Kaggle website.
 
 ## 
-![1686478193961](https://github.com/Skinnea/project/assets/46983155/c050dcc8-b48b-4077-8678-558848d7d9ae)
+![lv_0_20230612072547](https://github.com/Skinnea/project/assets/46983155/158fc5fd-69d7-4408-b593-a95b722a111e)
 ![1686478193952](https://github.com/Skinnea/project/assets/46983155/52761462-0890-4c0a-9091-cefed2406908)
   
 ![1686478193936](https://github.com/Skinnea/project/assets/46983155/8aa4e6a8-dad9-4635-a987-c6138239d4e3)
