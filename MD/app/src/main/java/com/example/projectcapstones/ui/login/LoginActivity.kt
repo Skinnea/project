@@ -43,8 +43,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         myButton = binding.terms.okeButton
         myButton.isEnabled = false
-        binding.progressBar.visibility = View.GONE
-        binding.progressText.visibility = View.GONE
         val gso = GoogleSignInOptions
             .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -65,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
             myButton.isEnabled = binding.terms.check.isChecked
         }
         binding.terms.okeButton.setOnClickListener{
+            signIn()
             termAnimationClose()
             binding.terms.check.isChecked = true
         }
@@ -106,6 +105,8 @@ class LoginActivity : AppCompatActivity() {
                     show()
                 }
             } catch (_: ApiException) {
+                binding.progressBar.visibility = View.GONE
+                binding.progressText.visibility = View.GONE
                 AlertDialog.Builder(this@LoginActivity).apply {
                     setTitle("Maaf")
                     setMessage("Login gagal :(")
