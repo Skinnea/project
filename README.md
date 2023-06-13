@@ -1,13 +1,14 @@
-<h1 align="center">Capstone Project Bangkit 2023</h1>
+<!-- <h1 align="center">Capstone Project Bangkit 2023</h1> -->
 
 <p align="center">
   <img src="image/0-logo.png" alt="skinnea logo" height="180" />
 </p>
 
-<h1 align="center">Skinnea</h1>
+<h1 align="center">SKINNEA</h1>
 
-<h2 align="left">Hi There👋, We are from the C23-PSO25 Product-based Capstone Project Bangkit 2023.</h2>
-<p align="left">Here we are developing the "Skinnea" application for the prediction of skin diseases. We use machine learning for predictions, we also build Android apps, and we build APIs for integrating machine learning models into Android.</p>
+<h2 align="center">Product-based Capstone Project Bangkit 2023</h2>
+<p align="left">Hi There👋</p>
+<p align="left">We are from the C23-PSO25 team. Here, we are developed the "Skinnea" application for the prediction of skin diseases. We use machine learning for predictions, build Android apps, and build APIs for integrating machine learning models into Android.</p>
 
 <p align="left">
 </p>
