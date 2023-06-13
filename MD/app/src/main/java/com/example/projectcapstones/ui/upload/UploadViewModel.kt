@@ -80,7 +80,6 @@ class UploadViewModel : ViewModel() {
     fun sendHistory(file: File) {
         _isLoading.value = true
         if (uid != null) {
-            _isLoading.value = true
             val imageRef = FirebaseStorage.getInstance().reference.child("Skinnea/${file.name}")
             val upload = imageRef.putFile(file.toUri())
             viewModelScope.launch {
@@ -106,7 +105,6 @@ class UploadViewModel : ViewModel() {
                         .add(user)
                         .addOnSuccessListener {
                             _isLoading.value = false
-                            _message.value = "History berhasil disimpan ^^"
                             _isPlayAnimation.value = true
                         }
                         .addOnFailureListener {

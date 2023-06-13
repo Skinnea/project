@@ -35,14 +35,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var viewModel: UploadViewModel
     private var imageCapture: ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-    private var result: String? = null
-    private var accuracy: String? = null
-    private var deskripsi: String? = null
-    private var imgObat: String? = null
-    private var namaObat: String? = null
-    private var pemakaianObat: String? = null
-    private var detailObat: String? = null
-    private var imageUrl: String? = null
+    private var results: ResultSkin? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,16 +123,6 @@ class CameraActivity : AppCompatActivity() {
             startCamera()
         }
         binding.previewImage.uploadButton.setOnClickListener {
-            val results = ResultSkin(
-                imageUrl,
-                result,
-                accuracy,
-                deskripsi,
-                imgObat,
-                namaObat,
-                pemakaianObat,
-                detailObat,
-            )
             val intent = Intent(this@CameraActivity, DetailActivity::class.java)
             intent.putExtra(DetailActivity.EXTRA_RESULT_SKIN, results)
             startActivity(intent)
@@ -217,15 +200,17 @@ class CameraActivity : AppCompatActivity() {
 
     private fun setupViewModel(){
         viewModel.upload.observe(this) { response ->
-            result = response.result
-            accuracy = response.accuracy
-            deskripsi = response.deskripsi
-            namaObat = response.namaObat
-            pemakaianObat = response.pemakaianObat
-            detailObat = response.detailObat
-            imgObat = response.imgObat
-            binding.previewImage.result.text = result
-            binding.previewImage.accurate.text = accuracy
+             results = ResultSkin(
+                result = response.result,
+                accuracy = response.accuracy,
+                deskripsi = response.deskripsi,
+                imgObat = response.imgObat,
+                namaObat = response.namaObat,
+                pemakaianObat = response.pemakaianObat,
+                detailObat = response.detailObat
+            )
+            binding.previewImage.result.text = results?.result
+            binding.previewImage.accurate.text = results?.accuracy
         }
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
