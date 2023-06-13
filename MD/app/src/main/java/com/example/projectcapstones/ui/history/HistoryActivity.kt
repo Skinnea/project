@@ -27,7 +27,7 @@ class HistoryActivity : AppCompatActivity() {
         binding.rvListHistory.layoutManager = LinearLayoutManager(this)
         viewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         viewModel.historyList.observe(this) { history ->
-            adapter.historySkin(history)
+            adapter.submitList(history)
         }
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
