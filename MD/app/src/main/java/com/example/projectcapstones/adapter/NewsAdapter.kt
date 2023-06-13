@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectcapstones.databinding.ItemListNewsBinding
 import com.example.projectcapstones.response.ArticlesItem
 
-class NewsAdapter(private val onItemClick: (ArticlesItem) -> Unit) : ListAdapter<ArticlesItem, NewsAdapter.MyViewHolder>(
-    DIFF_CALLBACK
-) {
+class NewsAdapter(private val onItemClick: (ArticlesItem) -> Unit) :
+    ListAdapter<ArticlesItem, NewsAdapter.MyViewHolder>(
+        DIFF_CALLBACK
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = ItemListNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemListNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding, onItemClick)
     }
 
@@ -23,7 +25,10 @@ class NewsAdapter(private val onItemClick: (ArticlesItem) -> Unit) : ListAdapter
         holder.bind(news)
     }
 
-    class MyViewHolder(private val binding: ItemListNewsBinding, val onItemClick: (ArticlesItem) -> Unit) : RecyclerView.ViewHolder(
+    class MyViewHolder(
+        private val binding: ItemListNewsBinding,
+        val onItemClick: (ArticlesItem) -> Unit
+    ) : RecyclerView.ViewHolder(
         binding.root
     ) {
         fun bind(news: ArticlesItem) {
@@ -43,12 +48,18 @@ class NewsAdapter(private val onItemClick: (ArticlesItem) -> Unit) : ListAdapter
     companion object {
         val DIFF_CALLBACK: DiffUtil.ItemCallback<ArticlesItem> =
             object : DiffUtil.ItemCallback<ArticlesItem>() {
-                override fun areItemsTheSame(oldUser: ArticlesItem, newUser: ArticlesItem): Boolean {
+                override fun areItemsTheSame(
+                    oldUser: ArticlesItem,
+                    newUser: ArticlesItem
+                ): Boolean {
                     return oldUser.title == newUser.title
                 }
 
                 @SuppressLint("DiffUtilEquals")
-                override fun areContentsTheSame(oldUser: ArticlesItem, newUser: ArticlesItem): Boolean {
+                override fun areContentsTheSame(
+                    oldUser: ArticlesItem,
+                    newUser: ArticlesItem
+                ): Boolean {
                     return oldUser == newUser
                 }
             }

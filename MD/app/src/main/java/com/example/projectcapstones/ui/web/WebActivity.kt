@@ -1,3 +1,13 @@
+package com.example.projectcapstones.ui.web
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import com.example.projectcapstones.databinding.ActivityWebBinding
+
 class WebActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWebBinding
     private var ispageSuccess = false
