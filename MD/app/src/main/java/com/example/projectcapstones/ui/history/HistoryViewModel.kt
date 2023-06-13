@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.launch
 
 class HistoryViewModel : ViewModel() {
@@ -30,6 +31,7 @@ class HistoryViewModel : ViewModel() {
                 db.collection("users")
                     .document(uid.toString())
                     .collection("historyMedic")
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
                     .get()
                     .addOnSuccessListener { history ->
                         _isLoading.value = false
