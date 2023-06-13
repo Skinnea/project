@@ -131,6 +131,7 @@ class CameraActivity : AppCompatActivity() {
         }
         binding.previewImage.uploadButton.setOnClickListener {
             val results = ResultSkin(
+                imageUrl,
                 result,
                 accuracy,
                 deskripsi,
@@ -138,7 +139,6 @@ class CameraActivity : AppCompatActivity() {
                 namaObat,
                 pemakaianObat,
                 detailObat,
-                imageUrl
             )
             val intent = Intent(this@CameraActivity, DetailActivity::class.java)
             intent.putExtra(DetailActivity.EXTRA_RESULT_SKIN, results)
@@ -217,7 +217,6 @@ class CameraActivity : AppCompatActivity() {
 
     private fun setupViewModel(){
         viewModel.upload.observe(this) { response ->
-            playAnimation()
             result = response.result
             accuracy = response.accuracy
             deskripsi = response.deskripsi
@@ -231,6 +230,9 @@ class CameraActivity : AppCompatActivity() {
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.progressText.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+        viewModel.playAnimation.observe(this) { isPlayAnimation ->
+            if (isPlayAnimation) playAnimation() else playAnimationRestart()
         }
         viewModel.message.observe(this) { errorMessage ->
             AlertDialog.Builder(this).apply {

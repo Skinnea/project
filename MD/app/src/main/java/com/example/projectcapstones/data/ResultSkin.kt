@@ -4,14 +4,15 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ResultSkin(
-    val result: String?,
-    val accuracy: String?,
-    val deskripsi: String?,
-    val imgObat: String?,
-    val namaObat: String?,
-    val pemakaianObat: String?,
-    val detailObat: String?,
-    val imageUrl: String?
+    val imageUrl: String? = null,
+    val result: String? = null,
+    val accuracy: String? = null,
+    val deskripsi: String? = null,
+    val imgObat: String? = null,
+    val namaObat: String? = null,
+    val pemakaianObat: String? = null,
+    val detailObat: String? = null,
+    val timestamp: Long? = null,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -21,10 +22,12 @@ data class ResultSkin(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readLong()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(imageUrl)
         parcel.writeString(result)
         parcel.writeString(accuracy)
         parcel.writeString(deskripsi)
@@ -32,7 +35,7 @@ data class ResultSkin(
         parcel.writeString(namaObat)
         parcel.writeString(pemakaianObat)
         parcel.writeString(detailObat)
-        parcel.writeString(imageUrl)
+        timestamp?.let { parcel.writeLong(it) }
     }
 
     override fun describeContents(): Int {

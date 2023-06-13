@@ -1,7 +1,5 @@
 package com.example.projectcapstones.adapter
 
-import android.content.Context
-import android.content.Intent
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,70 +7,61 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.projectcapstones.data.ResultSkin
 import com.example.projectcapstones.databinding.ItemListHistoryBinding
-import com.example.projectcapstones.ui.detail.DetailActivity
-import com.google.firebase.firestore.DocumentSnapshot
 
-class HistoryAdapter(private val context: Context) :
-    ListAdapter<DocumentSnapshot, HistoryAdapter.ViewHolder>(DiffCallback()) {
+class HistoryAdapter(private val onItemClick: (ResultSkin) -> Unit) :
+    ListAdapter<ResultSkin, HistoryAdapter.MyViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding =
             ItemListHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return MyViewHolder(binding, onItemClick)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val document = getItem(position)
-        holder.bind(
-            document.getString("result"),
-            document.getString("accuracy"),
-            document.getString("deskripsi"),
-            document.getString("imageUrl"),
-            document.getLong("timestamp"),
-        )
-        val imageUrl = document.getString("imageUrl")
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra("imageResult", imageUrl)
-            context.startActivity(intent)
-        }
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val resultSkinData = getItem(position)
+        holder.bind(resultSkinData)
     }
 
-    inner class ViewHolder(private val binding: ItemListHistoryBinding) :
+    class MyViewHolder(
+        private val binding: ItemListHistoryBinding,
+        val onItemClick: (ResultSkin) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(
-            name: String?,
-            accuracy: String?,
-            description: String?,
-            imageUrl: String?,
-            timestamp: Long? = null
-        ) {
-            binding.nama.text = name
-            binding.accuracy.text = accuracy
-            binding.isi.text = description
-            if (timestamp != null) {
+        fun bind(resultSkinData: ResultSkin) {
+            binding.nama.text = resultSkinData.result
+            binding.accuracy.text = resultSkinData.accuracy
+            binding.isi.text = resultSkinData.deskripsi
+            resultSkinData.timestamp?.let { timestamp ->
                 binding.timestamp.text = DateUtils.getRelativeTimeSpanString(timestamp)
             }
-            imageUrl?.let { url ->
+            resultSkinData.imageUrl?.let { url ->
                 Glide.with(binding.root)
                     .load(url)
                     .into(binding.img)
             }
+            itemView.setOnClickListener {
+                onItemClick(resultSkinData)
+            }
         }
     }
 
-    private class DiffCallback : DiffUtil.ItemCallback<DocumentSnapshot>() {
+    override fun submitList(list: List<ResultSkin>?) {
+        super.submitList(list)
+    }
+
+    private class DiffCallback : DiffUtil.ItemCallback<ResultSkin>() {
         override fun areItemsTheSame(
-            oldItem: DocumentSnapshot,
-            newItem: DocumentSnapshot
+            oldItem: ResultSkin,
+            newItem: ResultSkin
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.imageUrl == newItem.imageUrl
         }
 
         override fun areContentsTheSame(
-            oldItem: DocumentSnapshot,
-            newItem: DocumentSnapshot
+            oldItem: ResultSkin,
+            newItem: ResultSkin
         ): Boolean {
             return oldItem == newItem
         }
