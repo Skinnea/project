@@ -43,12 +43,14 @@ The skin is the first organ to be exposed to external stimuli, including tempera
 In this research, we try to build a machine learning model that can recognize types of skin diseases based on uploaded images. Models can use the CNN architecture to identify or classify them. We use Google Cloud as a Cloud service provider. The cloud will implement machine learning models, execute multiple queries, and provide consumable API  for data capture on mobile platforms. We also create a prototype or application as an interface between the user and machine learning models such as cameras, pages, functions using the Kotlin language. The test was carried out using the Dermnet dataset that we obtained from the Kaggle website.
 
 ## 
-![lv_0_20230612072547](https://github.com/Skinnea/project/assets/46983155/158fc5fd-69d7-4408-b593-a95b722a111e)
-![1686478193952](https://github.com/Skinnea/project/assets/46983155/52761462-0890-4c0a-9091-cefed2406908)
-  
-![1686478193936](https://github.com/Skinnea/project/assets/46983155/8aa4e6a8-dad9-4635-a987-c6138239d4e3)
-![1686478193928](https://github.com/Skinnea/project/assets/46983155/0601cef1-591e-4e03-99d7-599aeafd4c87)
-![1686478193944](https://github.com/Skinnea/project/assets/46983155/469c2da2-a85c-411f-b56c-98f66badda87)
+![1686650877875 (1)](https://github.com/Skinnea/project/assets/46983155/a24ef330-8cb9-4604-b19c-361654843241)
+![1686650877866 (2)](https://github.com/Skinnea/project/assets/46983155/e26a4528-d85c-4616-9c59-a5e4deb6decc)
+![1686650877858 (1)](https://github.com/Skinnea/project/assets/46983155/7f3d5ce6-e2e0-4b12-8a8a-fd37c50e4c95)
+
+![1686650877841 (1)](https://github.com/Skinnea/project/assets/46983155/3d2df024-ed7c-42ed-aee9-ad40345e56dc)
+![1686650877832 (2)](https://github.com/Skinnea/project/assets/46983155/43f894b8-5f84-4510-aeae-416b67211030)
+![1686650877826 (1)](https://github.com/Skinnea/project/assets/46983155/f04927fc-c4eb-45c9-81cb-1c0916b33c10)
+![1686650877818 (1)](https://github.com/Skinnea/project/assets/46983155/f4064322-928e-4bd0-9a5a-ca7ad1e69a57)
 
 <h1 align="center">Skinnea Team</h1>
 
