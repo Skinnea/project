@@ -29,6 +29,7 @@ class HistoryAdapter(private val context: Context) :
         val document = skinData[position]
         holder.bind(
             document.getString("result"),
+            document.getString("accuracy"),
             document.getString("deskripsi"),
             document.getString("imageUrl"),
             document.getLong("timestamp"),
@@ -61,8 +62,15 @@ class HistoryAdapter(private val context: Context) :
 
     inner class ViewHolder(private val binding: ItemListHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(name: String?, description: String?, imageUrl: String?, timestamp: Long? = null) {
+        fun bind(
+            name: String?,
+            accuracy: String?,
+            description: String?,
+            imageUrl: String?,
+            timestamp: Long? = null
+        ) {
             binding.nama.text = name
+            binding.accuracy.text = accuracy
             binding.isi.text = description
             if (timestamp != null) {
                 binding.timestamp.text = DateUtils.getRelativeTimeSpanString(timestamp)
