@@ -15,7 +15,7 @@
 </div>
 
 
-<h1 align="center">Machine Learning Flow Diagram</h1>
+<h1 align="center">Machine Learning Flow</h1>
 
 <p align="center">
   <img src="image/skinnea-ml.jpg">
