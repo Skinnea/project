@@ -6,6 +6,7 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.projectcapstones.databinding.ItemListHistoryBinding
@@ -13,20 +14,16 @@ import com.example.projectcapstones.ui.detail.DetailActivity
 import com.google.firebase.firestore.DocumentSnapshot
 
 class HistoryAdapter(private val context: Context) :
-    RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
-    private val skinData: MutableList<DocumentSnapshot> = mutableListOf()
+    ListAdapter<DocumentSnapshot, HistoryAdapter.ViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            ItemListHistoryBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding =
+            ItemListHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val document = skinData[position]
+        val document = getItem(position)
         holder.bind(
             document.getString("result"),
             document.getString("accuracy"),
@@ -40,24 +37,6 @@ class HistoryAdapter(private val context: Context) :
             intent.putExtra("imageResult", imageUrl)
             context.startActivity(intent)
         }
-    }
-
-    override fun getItemCount(): Int = skinData.size
-
-    fun historySkin(newskinData: List<DocumentSnapshot>) {
-        val sortedData = newskinData.sortedByDescending { it.getLong("timestamp") }
-        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize(): Int = skinData.size
-            override fun getNewListSize(): Int = sortedData.size
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                skinData[oldItemPosition].id == sortedData[newItemPosition].id
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                skinData[oldItemPosition] == sortedData[newItemPosition]
-        })
-        skinData.clear()
-        skinData.addAll(sortedData)
-        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class ViewHolder(private val binding: ItemListHistoryBinding) :
@@ -80,6 +59,22 @@ class HistoryAdapter(private val context: Context) :
                     .load(url)
                     .into(binding.img)
             }
+        }
+    }
+
+    private class DiffCallback : DiffUtil.ItemCallback<DocumentSnapshot>() {
+        override fun areItemsTheSame(
+            oldItem: DocumentSnapshot,
+            newItem: DocumentSnapshot
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: DocumentSnapshot,
+            newItem: DocumentSnapshot
+        ): Boolean {
+            return oldItem == newItem
         }
     }
 }
