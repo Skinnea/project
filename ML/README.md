@@ -12,10 +12,11 @@
 |    Nahla Tarisafitri           |  M296DKX4057 |  Machine Learning  |     [LinkedIn](https://www.linkedin.com/in/nahlatafi)     |
 |    Muhammad Zidan Hendriyadi   | M182DSX0465  |  Machine Learning  |     [LinkedIn](https://www.linkedin.com/in/muhammad-zidan-hendriyadi-3a248b234)     |
 
-
-  
 </div>
 
+
+<h1 align="center">Machine Learning Flow</h1>
+
 <p align="center">
-  <img src="image/CC.drawio.png">
+  <img src="image/skinnea-ml.jpg">
 </p>
